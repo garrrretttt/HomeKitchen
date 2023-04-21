@@ -30,6 +30,12 @@ export class MealService {
     );
   }
 
+  addMeal(meal: Meal): Observable<Meal> {
+    return this.http.post<Meal>(this.mealsUrl, meal, this.httpOptions).pipe(
+      catchError(this.handleError<Meal>('addMeal'))
+    );
+  }
+
   updateMeal(meal: Meal): Observable<any> {
     return this.http.put(this.mealsUrl, meal, this.httpOptions).pipe(
       catchError(this.handleError<any>('updateMeal'))
