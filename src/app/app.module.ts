@@ -6,12 +6,12 @@ import { InMemoryDataService } from './in-memory-data.service';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { MealComponent } from './meal/meal.component';
+import { MealDetailComponent } from './meal/meal-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MealComponent
+    MealDetailComponent
   ],
   imports: [
     BrowserModule,

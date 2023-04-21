@@ -13,6 +13,7 @@ export interface Meal {
     timeStart: string;
     picture: string;
     chef: Account;
+    ratings: number[];
     // Dish 
     // Party Size 
     // People that have booked 

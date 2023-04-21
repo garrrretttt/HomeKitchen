@@ -5,7 +5,7 @@ export interface Account {
     dietaryRestrictions: string[];
     bio: string;
     profilePicture: string;
-    ratings: {'Service': number[], 'Meal Quality': number[]};
+    ratings: {'Diner': number[], 'Chef': number[]};
     username: string;
     password: string;
     // Name 

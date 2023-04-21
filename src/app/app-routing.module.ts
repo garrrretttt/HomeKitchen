@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MealComponent } from './meal/meal.component';
+import { MealDetailComponent } from './meal/meal-detail.component';
 
 const routes: Routes = [
-  { path: 'meal/view/$id', component: MealComponent },
-  { path: 'meal/edit/$id', component: MealComponent }
+  { path: 'meal/view/:id', component: MealDetailComponent },
+  { path: 'meal/edit/:id', component: MealDetailComponent }
 ];
 
 @NgModule({
