@@ -7,11 +7,14 @@ import { InMemoryDataService } from './in-memory-data.service';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MealDetailComponent } from './meal/meal-detail.component';
+import { RouterModule } from '@angular/router';
+import { MealListComponent } from './meal-list/meal-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MealDetailComponent
+    MealDetailComponent,
+    MealListComponent
   ],
   imports: [
     BrowserModule,
@@ -19,7 +22,7 @@ import { MealDetailComponent } from './meal/meal-detail.component';
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
-    )
+    ),
   ],
   providers: [],
   bootstrap: [AppComponent]

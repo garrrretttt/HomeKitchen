@@ -1,7 +1,49 @@
-<div *ngIf="meal">
-    <img src="high" alt="picture of the meal"/>
-    <p>{{meal.ratings}}</p>
-    <p>{{meal}}</p>
-    <p>{{meal.ratings}}</p>
-    <button type="button" (click)="goBack()">go back</button>
+<div *ngIf="meal && details==false" class="container">
+    <div (mouseover)="hover=true" (mouseleave)="hover=false" (click)="cardClick(meal.id)" class="card mb-3"
+        style="width: 15rem;" [style]="hover ? onHover : ''">
+        <img src="{{meal.picture}}" class="card-img-top" style="height: 15rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{meal.dishName}}</h5>
+            <h6 class="card-subtitle text-secondary">${{meal.cost}} |
+                {{meal.partySize-meal.AmountBooked}}/{{meal.partySize}} seats available</h6>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="meal && details==true" class="container-fluid">
+    <div class="card border border-2 m-3" style="width: 23rem;">
+        <img src="{{meal.picture}}" class="card-img-top align-self-center rounded m-3 mb-0 border border-2"
+            style="height: 20rem; width: 20rem;">
+        <div class="card-body m-0">
+            <hr>
+            <h5 class="card-title m-0">{{meal.dishName}}</h5>
+            <h6 class="card-subtitle mb-2 text-secondary m-0">${{meal.cost}} |
+                {{meal.partySize-meal.AmountBooked}}/{{meal.partySize}} seats available</h6>
+            <!-- Insert link to chef account page in next line -->
+            <p class="card-text">
+                Chef: <a routerLink="">{{meal.chef.name}}</a><br>
+                Time: {{meal.timeStart}}<br>
+                Address: {{meal.location}}<br>
+                Dietary Restrictions: 
+                    <span *ngFor="let item of meal.dietaryRestrictions; let i = index">
+                        {{item}}<span *ngIf="i < meal.dietaryRestrictions.length - 1">,</span>
+                    </span><br>
+                Meal Tags: 
+                    <span *ngFor="let item of meal.tags; let i = index">
+                        {{item}}<span *ngIf="i < meal.tags.length - 1">,</span>
+                    </span><br>
+            </p>
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <button (click)="goBack()" class="btn btn-outline-danger float-left">Back</button>
+                </div>
+                <div class="col-6">
+                    <button *ngIf="isChef == false" (click)="bookMeal()" class="btn btn-outline-primary float-end">Book</button>
+                    <button *ngIf="isChef && isEdit == false" (click)="toggleMeal()" class="btn btn-outline-warning float-end">Edit</button>
+                    <button *ngIf="isChef && isEdit == true" (click)="toggleMeal()" class="btn btn-outline-success float-end">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

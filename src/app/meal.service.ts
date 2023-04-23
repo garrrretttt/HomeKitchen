@@ -42,6 +42,14 @@ export class MealService {
     );
   }
 
+  deleteMeal(id: number): Observable<Meal> {
+    const url = `${this.mealsUrl}/${id}`;
+
+    return this.http.delete<Meal>(url, this.httpOptions).pipe(
+      catchError(this.handleError<Meal>('deleteMeal'))
+    );
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
