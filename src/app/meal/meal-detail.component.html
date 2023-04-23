@@ -1,7 +1,9 @@
-<div *ngIf="meal">
-    <img src="high" alt="picture of the meal"/>
-    <p>{{meal.ratings}}</p>
-    <p>{{meal}}</p>
-    <p>{{meal.ratings}}</p>
-    <button type="button" (click)="goBack()">go back</button>
+<div *ngIf="meal && details==false" class="container">
+    <div (mouseover)="hover=true" (mouseleave)="hover=false" (click)="cardClick(meal.id)" class="card" style="width: 15rem;" [style]="hover ? onHover : ''">
+        <img src="{{meal.picture}}" class="card-img-top" style="height: 15rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{meal.dishName}}</h5>
+            <h6 class="card-subtitle mb-2 text-secondary">${{meal.cost}} | {{meal.partySize-meal.AmountBooked}}/{{meal.partySize}} seats available</h6>
+        </div>
+    </div>
 </div>
