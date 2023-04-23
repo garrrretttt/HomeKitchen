@@ -9,12 +9,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { MealDetailComponent } from './meal/meal-detail.component';
 import { RouterModule } from '@angular/router';
 import { MealListComponent } from './meal-list/meal-list.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MealDetailComponent,
-    MealListComponent
+    MealListComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
