@@ -11,11 +11,13 @@ import { MealService } from '../meal.service';
   styleUrls: ['./meal-detail.component.css']
 })
 export class MealDetailComponent implements OnInit {
-  id: number = 0;
+  @Input() id?: number;
   meal?: Meal;
   details: boolean = false;
   hover: boolean = false;
-  onHover: string = 'box-shadow: 5px 5px 5px gray;'
+  onHover: string = 'box-shadow: 5px 5px 5px gray;';
+  isChef: boolean = true;
+  isEdit: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,14 +28,17 @@ export class MealDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMeal();
-    if (this.router.url == `/meal/view/${this.meal?.id}` || this.router.url == `/meal/edit/${this.meal?.id}`) {
-      // this.details = true;
-    }
   }
 
   getMeal(): void {
-    if (this.id) {
-      this.mealService.getMeal(0)
+    if (typeof this.id !== 'undefined') {
+      this.mealService.getMeal(this.id)
+        .subscribe(meal => this.meal = meal);
+    }
+    else {
+      this.details = true;
+      const id = Number(this.route.snapshot.paramMap.get('id'));
+      this.mealService.getMeal(id)
         .subscribe(meal => this.meal = meal);
     }
   }
@@ -45,4 +50,20 @@ export class MealDetailComponent implements OnInit {
   cardClick(id: number): void {
     this.router.navigate([`/meal/view/${id}`])
   }
+
+  bookMeal() { }
+
+  toggleMeal() {
+    if (this.isEdit == false) {
+      this.isEdit = true;
+    }
+    else {
+      this.isEdit = false
+      // this is clicking the save button
+      // call update meal function
+      this.updateMeal();
+    }
+  }
+
+  updateMeal() { }
 }
