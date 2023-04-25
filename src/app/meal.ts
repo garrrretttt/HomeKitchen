@@ -10,7 +10,8 @@ export interface Meal {
     dietaryRestrictions: string[];
     cost: number;
     location: string;
-    timeStart: string;
+    startDate: Date;
+    duration: number;
     picture: string;
     chef: Account;
     ratings: number[];

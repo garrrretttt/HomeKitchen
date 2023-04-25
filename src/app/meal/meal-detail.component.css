@@ -1,0 +1,12 @@
+.list-card{
+    transition: 0.25s;
+    width: 15rem;
+    max-height: 22rem;
+    overflow-y: auto;
+    overflow-x:hidden;
+}
+
+.list-card:hover{
+    transform: scale(1.05);
+    box-shadow: 5px 5px 5px gray
+}
