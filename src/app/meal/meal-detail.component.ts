@@ -27,6 +27,7 @@ export class MealDetailComponent implements OnInit {
   edit: boolean = false;
   restriction: string = '';
   tag: string = '';
+  newMeal: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,22 +42,30 @@ export class MealDetailComponent implements OnInit {
     this.getMeal();
   }
 
+  ngOnDestroy(): void {
+    if (!this.isValidMeal()) {
+      if (this.newMeal) {
+        this.deleteMeal();
+      }
+    }
+  }
+
   getUser() {
     // get active user here
   }
 
   getMeal(): void {
-    if (typeof this.id !== 'undefined') {
+    if (typeof this.id != 'undefined') {
       this.mealService.getMeal(this.id)
         .subscribe(meal => this.meal = meal);
     }
-    else if (this.router.url == '/meal/view') {
+    else if (this.router.url.match('/meal/view')) {
       this.details = true;
       const id = Number(this.route.snapshot.paramMap.get('id'));
       this.mealService.getMeal(id)
         .subscribe(meal => this.meal = meal);
     }
-    else {
+    else if (this.router.url.match('/meal/create')) {
       this.mealService.addMeal({
         dishName: '', partySize: 0,
         AmountBooked: 0, tags: [],
@@ -65,9 +74,12 @@ export class MealDetailComponent implements OnInit {
         startDate: new Date(), duration: 0,
         picture: 'https://i.imgur.com/e76p3L3.png',
         chef: this.user, ratings: []
-      } as unknown as Meal).subscribe(meal => this.meal = meal)
-      this.details = true;
-      this.edit = true;
+      } as unknown as Meal).subscribe(meal => {
+        this.meal = meal;
+        this.details = true;
+        this.edit = true;
+        this.newMeal = true;
+      });
     }
   }
 
@@ -83,17 +95,38 @@ export class MealDetailComponent implements OnInit {
 
   toggleMeal() {
     if (this.edit == false) {
+      this.isValidMeal();
       this.edit = true;
     }
-    else {
-      this.edit = false
-      this.updateMeal();
+    else { // save the meal
+      if (this.meal) {
+        if (this.isValidMeal()) {
+          this.edit = false
+          this.updateMeal();
+        }
+      }
     }
+  }
+
+  isValidMeal(): boolean {
+    if (this.meal) {
+      if (this.meal?.dishName != '' && this.meal.cost != 0 && this.meal.partySize != 0
+        && new Date(this.meal.startDate) >= new Date()
+        && this.meal.duration != 0 && this.meal.location != '') {
+        return true;
+      }
+    }
+    return false;
   }
 
   updateMeal() {
     if (this.meal) {
-      this.mealService.updateMeal(this.meal).subscribe();
+      this.mealService.updateMeal(this.meal).subscribe(meal => {
+        if (this.meal && this.newMeal) {
+          this.newMeal = false;
+          this.router.navigate(['/meal/view', this.meal.id]);
+        }
+      });
     }
   }
 
