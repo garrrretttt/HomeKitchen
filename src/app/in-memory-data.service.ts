@@ -8,7 +8,7 @@ import { Account } from './account';
 })
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
-    const accounts = [
+    const accounts: Account[] = [
       {
         id: 0, isChef: true, name: 'Master', dietaryRestrictions: ['None'],
         bio: 'I am master chef', profilePicture: '',
@@ -89,8 +89,8 @@ export class InMemoryDataService implements InMemoryDbService {
     return { meals };
   }
 
-  genMealId(meals: Meal[]): number {
-    return meals.length > 0 ? Math.max(...meals.map(meal => meal.id)) + 1 : 11;
+  genId(meals: Meal[]): number {
+    return Math.max(...meals.map(meal => meal.id)) + 1;
   }
   genAccountId(acounts: Account[]): number {
     return acounts.length > 0 ? Math.max(...acounts.map(acount => acount.id)) + 1 : 11;

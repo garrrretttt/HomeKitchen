@@ -5,7 +5,7 @@ import { MealListComponent } from './meal-list/meal-list.component';
 
 const routes: Routes = [
   { path: 'meal/view/:id', component: MealDetailComponent },
-  { path: 'meal/edit/:id', component: MealDetailComponent },
+  { path: 'meal/create', component: MealDetailComponent},
   { path: 'meal/list', component: MealListComponent },
 ];
 
