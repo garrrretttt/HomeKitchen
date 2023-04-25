@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Meal } from 'src/app/meal';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError} from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +44,6 @@ export class MealService {
 
   deleteMeal(id: number): Observable<Meal> {
     const url = `${this.mealsUrl}/${id}`;
-
     return this.http.delete<Meal>(url, this.httpOptions).pipe(
       catchError(this.handleError<Meal>('deleteMeal'))
     );

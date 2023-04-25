@@ -15,9 +15,11 @@ export class MealDetailComponent implements OnInit {
   meal?: Meal;
   details: boolean = false;
   hover: boolean = false;
-  onHover: string = 'box-shadow: 5px 5px 5px gray;';
+  onHover: string = '';
   isChef: boolean = true;
-  isEdit: boolean = false;
+  edit: boolean = false;
+  restriction: string = '';
+  tag: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -54,16 +56,69 @@ export class MealDetailComponent implements OnInit {
   bookMeal() { }
 
   toggleMeal() {
-    if (this.isEdit == false) {
-      this.isEdit = true;
+    if (this.edit == false) {
+      this.edit = true;
     }
     else {
-      this.isEdit = false
+      this.edit = false
       // this is clicking the save button
       // call update meal function
       this.updateMeal();
     }
+    console.log(this.meal?.startDate)
   }
 
-  updateMeal() { }
+  updateMeal() {
+    if (this.meal) {
+      this.mealService.updateMeal(this.meal).subscribe();
+    }
+  }
+
+  deleteMeal() {
+    if (this.meal) {
+      this.mealService.deleteMeal(this.meal.id).subscribe();
+      this.goBack();
+    }
+  }
+
+  changeStartTime(time: string) {
+    if (this.meal) {
+      let split = time.split(':');
+      let date = new Date(this.meal.startDate);
+      date.setHours(parseInt(split[0]));
+      date.setMinutes(parseInt(split[1]));
+      this.meal.startDate = date;
+      console.log(date);
+    }
+  }
+
+  addRestriction() {
+    if (this.meal) {
+      if (!this.meal.dietaryRestrictions.includes(this.restriction) && this.restriction != '') {
+        this.meal?.dietaryRestrictions.push(this.restriction);
+        this.restriction = '';
+      }
+    }
+  }
+
+  deleteRestriction(id: number) {
+    if (this.meal) {
+      this.meal.dietaryRestrictions.splice(id, 1);
+    }
+  }
+
+  addTag() {
+    if (this.meal) {
+      if (!this.meal.tags.includes(this.tag) && this.tag != '') {
+        this.meal.tags.push(this.tag);
+        this.tag = '';
+      }
+    }
+  }
+
+  deleteTag(id: number) {
+    if (this.meal) {
+      this.meal.tags.splice(id, 1);
+    }
+  }
 }
