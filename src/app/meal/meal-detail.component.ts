@@ -4,6 +4,8 @@ import { Location } from '@angular/common';
 
 import { Meal } from '../meal';
 import { MealService } from '../meal.service';
+import { Account } from '../account';
+import { AccountService } from '../account.service';
 
 @Component({
   selector: 'meal-detail',
@@ -13,6 +15,11 @@ import { MealService } from '../meal.service';
 export class MealDetailComponent implements OnInit {
   @Input() id?: number;
   meal?: Meal;
+  user?: Account = {
+    id: 0, isChef: true, name: 'Master', dietaryRestrictions: ['None'],
+    bio: 'I am master chef', profilePicture: '',
+    ratings: { 'Diner': [5], 'Chef': [4, 5, 4] }, username: 'master', password: 'account'
+  };
   details: boolean = false;
   hover: boolean = false;
   onHover: string = '';
@@ -20,28 +27,59 @@ export class MealDetailComponent implements OnInit {
   edit: boolean = false;
   restriction: string = '';
   tag: string = '';
+  newMeal: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private mealService: MealService,
+    private accountService: AccountService,
     private location: Location,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.getUser();
     this.getMeal();
   }
 
+  ngOnDestroy(): void {
+    if (!this.isValidMeal()) {
+      if (this.newMeal) {
+        this.deleteMeal();
+      }
+    }
+  }
+
+  getUser() {
+    // get active user here
+  }
+
   getMeal(): void {
-    if (typeof this.id !== 'undefined') {
+    if (typeof this.id != 'undefined') {
       this.mealService.getMeal(this.id)
         .subscribe(meal => this.meal = meal);
     }
-    else {
+    else if (this.router.url.match('/meal/view')) {
       this.details = true;
       const id = Number(this.route.snapshot.paramMap.get('id'));
       this.mealService.getMeal(id)
         .subscribe(meal => this.meal = meal);
+    }
+    else if (this.router.url.match('/meal/create')) {
+      this.mealService.addMeal({
+        dishName: '', partySize: 0,
+        AmountBooked: 0, tags: [],
+        dietaryRestrictions: [], cost: 0,
+        location: '',
+        startDate: new Date(), duration: 0,
+        picture: 'https://i.imgur.com/e76p3L3.png',
+        chef: this.user, ratings: []
+      } as unknown as Meal).subscribe(meal => {
+        this.meal = meal;
+        this.details = true;
+        this.edit = true;
+        this.newMeal = true;
+      });
     }
   }
 
@@ -57,20 +95,38 @@ export class MealDetailComponent implements OnInit {
 
   toggleMeal() {
     if (this.edit == false) {
+      this.isValidMeal();
       this.edit = true;
     }
-    else {
-      this.edit = false
-      // this is clicking the save button
-      // call update meal function
-      this.updateMeal();
+    else { // save the meal
+      if (this.meal) {
+        if (this.isValidMeal()) {
+          this.edit = false
+          this.updateMeal();
+        }
+      }
     }
-    console.log(this.meal?.startDate)
+  }
+
+  isValidMeal(): boolean {
+    if (this.meal) {
+      if (this.meal?.dishName != '' && this.meal.cost != 0 && this.meal.partySize != 0
+        && new Date(this.meal.startDate) >= new Date()
+        && this.meal.duration != 0 && this.meal.location != '') {
+        return true;
+      }
+    }
+    return false;
   }
 
   updateMeal() {
     if (this.meal) {
-      this.mealService.updateMeal(this.meal).subscribe();
+      this.mealService.updateMeal(this.meal).subscribe(meal => {
+        if (this.meal && this.newMeal) {
+          this.newMeal = false;
+          this.router.navigate(['/meal/view', this.meal.id]);
+        }
+      });
     }
   }
 
@@ -88,7 +144,6 @@ export class MealDetailComponent implements OnInit {
       date.setHours(parseInt(split[0]));
       date.setMinutes(parseInt(split[1]));
       this.meal.startDate = date;
-      console.log(date);
     }
   }
 

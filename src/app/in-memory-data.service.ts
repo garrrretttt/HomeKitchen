@@ -8,7 +8,7 @@ import { Account } from './account';
 })
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
-    const accounts = [
+    const accounts: Account[] = [
       {
         id: 0, isChef: true, name: 'Master', dietaryRestrictions: ['None'],
         bio: 'I am master chef', profilePicture: '',
@@ -50,7 +50,7 @@ export class InMemoryDataService implements InMemoryDbService {
         chef: accounts[0], ratings: [4, 4, 4]
       },
       {
-        id: 2, dishName: 'Red Sauce with Wormy Stuff asdflkjasdf ;lkjasdf;lkj', partySize: 4,
+        id: 3, dishName: 'Red Sauce with Wormy Stuff asdflkjasdf ;lkjasdf;lkj', partySize: 4,
         AmountBooked: 0, tags: ['Child-Friendly', 'Pets Present'],
         dietaryRestrictions: ['None'], cost: 12,
         location: '1234 56th St S Fargo, ND',
@@ -59,7 +59,7 @@ export class InMemoryDataService implements InMemoryDbService {
         chef: accounts[0], ratings: [4, 4, 4]
       },
       {
-        id: 2, dishName: 'Red Sauce with Wormy Stuff', partySize: 4,
+        id: 4, dishName: 'Red Sauce with Wormy Stuff', partySize: 4,
         AmountBooked: 0, tags: ['Child-Friendly', 'Pets Present'],
         dietaryRestrictions: ['None'], cost: 12,
         location: '1234 56th St S Fargo, ND',
@@ -68,7 +68,7 @@ export class InMemoryDataService implements InMemoryDbService {
         chef: accounts[0], ratings: [4, 4, 4]
       },
       {
-        id: 2, dishName: 'Red Sauce with Wormy Stuff', partySize: 4,
+        id: 5, dishName: 'Red Sauce with Wormy Stuff', partySize: 4,
         AmountBooked: 0, tags: ['Child-Friendly', 'Pets Present'],
         dietaryRestrictions: ['None'], cost: 12,
         location: '1234 56th St S Fargo, ND',
@@ -77,7 +77,7 @@ export class InMemoryDataService implements InMemoryDbService {
         chef: accounts[0], ratings: [4, 4, 4]
       },
       {
-        id: 2, dishName: 'Red Sauce with Wormy Stuff', partySize: 4,
+        id: 6, dishName: 'Red Sauce with Wormy Stuff', partySize: 4,
         AmountBooked: 0, tags: ['Child-Friendly', 'Pets Present'],
         dietaryRestrictions: ['None'], cost: 12,
         location: '1234 56th St S Fargo, ND',
@@ -89,8 +89,8 @@ export class InMemoryDataService implements InMemoryDbService {
     return { meals };
   }
 
-  genMealId(meals: Meal[]): number {
-    return meals.length > 0 ? Math.max(...meals.map(meal => meal.id)) + 1 : 11;
+  genId(meals: Meal[]): number {
+    return Math.max(...meals.map(meal => meal.id)) + 1;
   }
   genAccountId(acounts: Account[]): number {
     return acounts.length > 0 ? Math.max(...acounts.map(acount => acount.id)) + 1 : 11;
