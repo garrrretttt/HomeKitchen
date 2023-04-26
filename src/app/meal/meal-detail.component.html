@@ -26,7 +26,8 @@
                 1 seat booked</h6>
             <!-- Insert link to chef account page in next line -->
             <p class="card-text">
-                Chef: <a routerLink="">{{meal.chef.name}}</a><br>
+                <!-- get chef name -->
+                Chef: <a routerLink="">Chef Name</a><br>
                 Date: {{meal.startDate | date}}<br>
                 Time: {{meal.startDate | date:"shortTime"}}<br>
                 Duration: {{meal.duration}} <span [textContent]="meal.duration == 1 ? 'hr' : 'hrs'"></span><br>
@@ -61,89 +62,10 @@
                         class="btn btn-outline-primary float-end">Book</button>
                     <button *ngIf="!isChef && isBooked" (click)="unbookMeal()"
                         class="btn btn-outline-secondary float-end">Unbook</button>
-                    <button *ngIf="isChef" (click)="toggleMeal()"
-                        class="btn btn-outline-warning float-end">Edit</button>
+                    <a *ngIf="isChef" routerLink="/meal/edit/{{meal.id}}"
+                        class="btn btn-outline-warning float-end">Edit</a>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-
-<!-- Editing Meal -->
-<div *ngIf="meal && details==true && edit==true" class="container-fluid">
-    <form (keydown.enter)="$event.preventDefault()" (ngSubmit)="toggleMeal()">
-        <div class="card border border-2 m-3" style="width: 23rem;">
-            <img src="{{meal.picture}}" class="card-img-top align-self-center rounded m-3 mb-0 border border-2"
-                style="height: 20rem; width: 20rem;">
-            <div class="card-body m-0">
-                <hr>
-                <h5 class="card-title m-0"><input class="border border-1 border-dark p-1 mb-1 rounded w-100" type="text"
-                        [(ngModel)]="meal.dishName" placeholder="Dish Name" name="dish name" required /></h5>
-                <h6 class="card-subtitle mb-2 text-secondary m-0">$<input
-                        class="border border-1 border-dark p-1 mb-1 ms-1  rounded" type="number" min="0.01" step="0.01"
-                        style="width: 6rem;" [(ngModel)]="meal.cost" placeholder="12.95" name="cost" required />
-                    <br>
-                    {{meal.partySize-meal.accountsBooked.length}} / <input
-                        class="border border-1 border-dark p-1 mb-1 rounded" type="number" min="1" style="width: 4rem;"
-                        [(ngModel)]="meal.partySize" placeholder="5" name="party size" required /> seats available
-                </h6>
-                <!-- Insert link to chef account page in next line -->
-                <p class="card-text">
-                    Date: <input class="border border-1 border-dark p-1 m-1 rounded" type="date"
-                        [ngModel]="meal.startDate | date:'yyyy-MM-dd'" (ngModelChange)="meal.startDate = $event"
-                        name="date" required /><br>
-                    Time: <input class="border border-1 border-dark p-1 m-1 rounded" type="time"
-                        [ngModel]="meal.startDate | date:'hh:mm'" (ngModelChange)="changeStartTime($event)" name="time"
-                        required /><br>
-                    Duration: <input class="border border-1 border-dark p-1 m-1 rounded" type="number"
-                        [(ngModel)]="meal.duration" placeholder="2" name="duration" required /> <span
-                        [textContent]="meal.duration == 1 ? 'hr' : 'hrs'"></span><br>
-                    Address: <input class="border border-1 border-dark p-1 m-1 rounded" type="text"
-                        [(ngModel)]="meal.location" placeholder="Address" name="address" required />
-                </p>
-                <div class="row ms-0">
-                    Dietary Restrictions: <input (keyup.enter)="addRestriction()"
-                        class="border border-1 border-dark p-1 m-1 w-50 rounded" type="text" [(ngModel)]="restriction"
-                        name="restrictions" />
-                    <div *ngIf="meal.dietaryRestrictions.length != 0" class="m-0 p-0">
-                        <div *ngFor="let item of meal.dietaryRestrictions; let i = index">
-                            <div
-                                class="border border-1 border-dark rounded bg-dark text-white p-2 ms-0 me-2 mt-1 float-start align-middle">
-                                <button type=button (click)="deleteRestriction(i)"
-                                    class="btn-close btn-close-white"></button><span class=""> {{item}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row ms-0">
-                    Meal Tags: <input (keyup.enter)="addTag()" class="border border-1 border-dark p-1 m-1 w-75 rounded"
-                        type="text" [(ngModel)]="tag" name="tags" /><br>
-                    <div *ngIf="meal.tags.length != 0" class="m-0 p-0">
-                        <div *ngFor="let item of meal.tags; let i = index">
-                            <div
-                                class="border border-1 border-dark rounded bg-dark text-white p-2 ms-0 me-2 mt-1 float-start align-middle">
-                                <button type=button (click)="deleteTag(i)"
-                                    class="btn-close btn-close-white"></button><span class=""> {{item}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-6">
-                        <button (click)="goBack()" class="btn btn-danger float-left">Back</button>
-                    </div>
-                    <div class="col-6">
-                        <input type="submit" *ngIf="isChef && edit && !newMeal"
-                            class="btn btn-outline-success float-end" value="Save" />
-                        <input type="submit" *ngIf="isChef && edit && newMeal" class="btn btn-outline-success float-end"
-                            value="Create" />
-                        <button *ngIf="isChef && edit && !newMeal" (click)="deleteMeal()"
-                            class="btn btn-outline-danger me-2 float-end">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
 </div>

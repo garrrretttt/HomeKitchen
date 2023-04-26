@@ -12,7 +12,7 @@ export interface Meal {
     startDate: Date;
     duration: number;
     picture: string;
-    chef: Account;
+    chefId: number;
     ratings: number[];
     accountsBooked: number[]; //stored by id
     // Dish 

@@ -6,7 +6,7 @@
         <a class="nav-link" routerLinkActive="active" routerLink="/home">Home</a>
         <a class="nav-link" routerLinkActive="active" routerLink="/meal/view/0">Meal</a>
         <a class="nav-link" routerLinkActive="active" routerLink="/meal/list">Meal List</a>
-        <a *ngIf="isChef" routerLinkActive="active" class="nav-link" routerLink="/meal/create">Create Meal</a>
+        <a class="nav-link" routerLinkActive="active" routerLink="/meal/create" *ngIf="isChef">Create Meal</a>
       </div>
     </div>
   </div>
