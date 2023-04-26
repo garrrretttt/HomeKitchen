@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 import { MealListComponent } from './meal-list/meal-list.component';
 import { EditMealComponent } from './edit-meal/edit-meal.component';
 import { CreateMealComponent } from './create-meal/create-meal.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CreateMealComponent } from './create-meal/create-meal.component';
     MealDetailComponent,
     MealListComponent,
     EditMealComponent,
-    CreateMealComponent
+    CreateMealComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
