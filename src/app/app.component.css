@@ -1,0 +1,12 @@
+.nav-link{
+    transition: 0.25s;
+}
+
+.nav-link:hover{
+    transform: scale(1.125);
+}
+
+.active{
+    transform: scale(1.125);
+    color: black;
+}

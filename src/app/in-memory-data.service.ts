@@ -11,20 +11,20 @@ export class InMemoryDataService implements InMemoryDbService {
     const accounts: Account[] = [
       {
         id: 0, isChef: true, name: 'Master', dietaryRestrictions: ['None'],
-        bio: 'I am master chef', profilePicture: '',
+        bio: 'I am master chef', profilePicture: '', mealsBooked: [],
         ratings: { 'Diner': [5], 'Chef': [4, 5, 4] }, username: 'master', password: 'account'
       },
 
       {
         id: 1, isChef: false, name: 'Alan Turing', dietaryRestrictions: ['None'],
-        bio: 'I like to eat', profilePicture: '',
+        bio: 'I like to eat', profilePicture: '', mealsBooked: [],
         ratings: { 'Diner': [5, 3, 3], 'Chef': [] }, username: 'Alan', password: 'Turing'
       }
     ]
     const meals: Meal[] = [
       {
         id: 0, dishName: 'Spaghetti', partySize: 4,
-        AmountBooked: 0, tags: ['Child-Friendly', 'Pets Present'],
+        accountsBooked: [], tags: ['Child-Friendly', 'Pets Present'],
         dietaryRestrictions: [], cost: 12,
         location: '1234 56th St S Fargo, ND',
         startDate: new Date(2023, 5, 5, 17, 30), duration: 1,
@@ -33,7 +33,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
         id: 1, dishName: 'Noodles with Tomato Sauces', partySize: 4,
-        AmountBooked: 0, tags: ['Child-Friendly', 'Pets Present'],
+        accountsBooked: [], tags: ['Child-Friendly', 'Pets Present'],
         dietaryRestrictions: ['None'], cost: 12,
         location: '1234 56th St S Fargo, ND',
         startDate: new Date(2023, 5, 5, 17, 30), duration: 1,
@@ -42,7 +42,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
         id: 2, dishName: 'Red Sauce with Wormy Stuff', partySize: 4,
-        AmountBooked: 0, tags: ['Child-Friendly', 'Pets Present'],
+        accountsBooked: [], tags: ['Child-Friendly', 'Pets Present'],
         dietaryRestrictions: ['None'], cost: 12,
         location: '1234 56th St S Fargo, ND',
         startDate: new Date(2023, 5, 5, 17, 30), duration: 1,
@@ -51,7 +51,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
         id: 3, dishName: 'Red Sauce with Wormy Stuff asdflkjasdf ;lkjasdf;lkj', partySize: 4,
-        AmountBooked: 0, tags: ['Child-Friendly', 'Pets Present'],
+        accountsBooked: [], tags: ['Child-Friendly', 'Pets Present'],
         dietaryRestrictions: ['None'], cost: 12,
         location: '1234 56th St S Fargo, ND',
         startDate: new Date(2023, 5, 5, 17, 30), duration: 1,
@@ -60,7 +60,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
         id: 4, dishName: 'Red Sauce with Wormy Stuff', partySize: 4,
-        AmountBooked: 0, tags: ['Child-Friendly', 'Pets Present'],
+        accountsBooked: [], tags: ['Child-Friendly', 'Pets Present'],
         dietaryRestrictions: ['None'], cost: 12,
         location: '1234 56th St S Fargo, ND',
         startDate: new Date(2023, 5, 5, 17, 30), duration: 1,
@@ -69,7 +69,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
         id: 5, dishName: 'Red Sauce with Wormy Stuff', partySize: 4,
-        AmountBooked: 0, tags: ['Child-Friendly', 'Pets Present'],
+        accountsBooked: [], tags: ['Child-Friendly', 'Pets Present'],
         dietaryRestrictions: ['None'], cost: 12,
         location: '1234 56th St S Fargo, ND',
         startDate: new Date(2023, 5, 5, 17, 30), duration: 1,
@@ -78,7 +78,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
         id: 6, dishName: 'Red Sauce with Wormy Stuff', partySize: 4,
-        AmountBooked: 0, tags: ['Child-Friendly', 'Pets Present'],
+        accountsBooked: [], tags: ['Child-Friendly', 'Pets Present'],
         dietaryRestrictions: ['None'], cost: 12,
         location: '1234 56th St S Fargo, ND',
         startDate: new Date(2023, 5, 5, 17, 30), duration: 1,

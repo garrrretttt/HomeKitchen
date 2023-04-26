@@ -15,9 +15,9 @@ import { AccountService } from '../account.service';
 export class MealDetailComponent implements OnInit {
   @Input() id?: number;
   meal?: Meal;
-  user?: Account = {
+  user: Account = {
     id: 0, isChef: true, name: 'Master', dietaryRestrictions: ['None'],
-    bio: 'I am master chef', profilePicture: '',
+    bio: 'I am master chef', profilePicture: '', mealsBooked: [],
     ratings: { 'Diner': [5], 'Chef': [4, 5, 4] }, username: 'master', password: 'account'
   };
   details: boolean = false;
@@ -28,6 +28,7 @@ export class MealDetailComponent implements OnInit {
   restriction: string = '';
   tag: string = '';
   newMeal: boolean = false;
+  isBooked: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -63,12 +64,17 @@ export class MealDetailComponent implements OnInit {
       this.details = true;
       const id = Number(this.route.snapshot.paramMap.get('id'));
       this.mealService.getMeal(id)
-        .subscribe(meal => this.meal = meal);
+        .subscribe(meal => {
+          this.meal = meal;
+          if (this.meal.accountsBooked.includes(this.user.id)) {
+            this.isBooked = true;
+          }
+        });
     }
     else if (this.router.url.match('/meal/create')) {
       this.mealService.addMeal({
         dishName: '', partySize: 0,
-        AmountBooked: 0, tags: [],
+        accountsBooked: [], tags: [],
         dietaryRestrictions: [], cost: 0,
         location: '',
         startDate: new Date(), duration: 0,
@@ -91,7 +97,27 @@ export class MealDetailComponent implements OnInit {
     this.router.navigate([`/meal/view/${id}`])
   }
 
-  bookMeal() { }
+  bookMeal() {
+    if (this.meal) {
+      this.meal.accountsBooked.push(this.user.id);
+      this.user.mealsBooked.push(this.meal.id);
+      this.updateMeal();
+      //this.updateAccount();
+      this.isBooked = true;
+    }
+  }
+
+  unbookMeal() {
+    if (this.meal) {
+      let userIndex = this.meal.accountsBooked.findIndex(id => id == this.user.id);
+      this.meal.accountsBooked.splice(userIndex, 1);
+      let mealIndex = this.user.mealsBooked.findIndex(id => id == this.meal?.id);
+      this.user.mealsBooked.splice(mealIndex, 1);
+      this.updateMeal();
+      //this.updateAccount();
+      this.isBooked = false;
+    }
+  }
 
   toggleMeal() {
     if (this.edit == false) {
@@ -122,7 +148,7 @@ export class MealDetailComponent implements OnInit {
   updateMeal() {
     if (this.meal) {
       this.mealService.updateMeal(this.meal).subscribe(meal => {
-        if (this.meal && this.newMeal) {
+        if (this.meal) {
           this.newMeal = false;
           this.router.navigate(['/meal/view', this.meal.id]);
         }
@@ -130,10 +156,14 @@ export class MealDetailComponent implements OnInit {
     }
   }
 
+  updateAccount() {
+    this.accountService.updateAccount(this.user).subscribe(user => this.user = user);
+  }
+
   deleteMeal() {
     if (this.meal) {
+      this.router.navigate(['/meal/list']);
       this.mealService.deleteMeal(this.meal.id).subscribe();
-      this.goBack();
     }
   }
 

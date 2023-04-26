@@ -1,8 +1,14 @@
-<h1>{{title}}</h1>
-<nav>
-  <a routerLink="/">Home </a>
-  <a routerLink="/meal/view/0">Meal </a>
-  <a routerLink="/meal/list">Meal List </a>
-  <a routerLink="/meal/create">Create Meal </a>
+<nav class="navbar navbar-expand bg-secondary mb-3">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">HomeKitchen</a>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" routerLinkActive="active" routerLink="/home">Home</a>
+        <a class="nav-link" routerLinkActive="active" routerLink="/meal/view/0">Meal</a>
+        <a class="nav-link" routerLinkActive="active" routerLink="/meal/list">Meal List</a>
+        <a *ngIf="isChef" routerLinkActive="active" class="nav-link" routerLink="/meal/create">Create Meal</a>
+      </div>
+    </div>
+  </div>
 </nav>
 <router-outlet></router-outlet>
