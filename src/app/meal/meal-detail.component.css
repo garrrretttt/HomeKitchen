@@ -1,7 +1,7 @@
 .list-card{
     transition: 0.25s;
     width: 15rem;
-    max-height: 22rem;
+    max-height: 24rem;
     overflow-y: auto;
     overflow-x:hidden;
 }
