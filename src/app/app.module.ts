@@ -10,12 +10,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { MealDetailComponent } from './meal/meal-detail.component';
 import { RouterModule } from '@angular/router';
 import { MealListComponent } from './meal-list/meal-list.component';
+import { EditMealComponent } from './edit-meal/edit-meal.component';
+import { CreateMealComponent } from './create-meal/create-meal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MealDetailComponent,
-    MealListComponent
+    MealListComponent,
+    EditMealComponent,
+    CreateMealComponent
   ],
   imports: [
     BrowserModule,
