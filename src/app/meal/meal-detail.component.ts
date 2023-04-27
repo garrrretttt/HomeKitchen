@@ -43,14 +43,6 @@ export class MealDetailComponent implements OnInit {
     this.getMeal();
   }
 
-  ngOnDestroy(): void {
-    if (!this.isValidMeal()) {
-      if (this.newMeal) {
-        this.deleteMeal();
-      }
-    }
-  }
-
   getUser() {
     // get active user here
   }
@@ -119,32 +111,6 @@ export class MealDetailComponent implements OnInit {
     }
   }
 
-  toggleMeal() {
-    if (this.edit == false) {
-      this.isValidMeal();
-      this.edit = true;
-    }
-    else { // save the meal
-      if (this.meal) {
-        if (this.isValidMeal()) {
-          this.edit = false
-          this.updateMeal();
-        }
-      }
-    }
-  }
-
-  isValidMeal(): boolean {
-    if (this.meal) {
-      if (this.meal?.dishName != '' && this.meal.cost != 0 && this.meal.partySize != 0
-        && new Date(this.meal.startDate) >= new Date()
-        && this.meal.duration != 0 && this.meal.location != '') {
-        return true;
-      }
-    }
-    return false;
-  }
-
   updateMeal() {
     if (this.meal) {
       this.mealService.updateMeal(this.meal).subscribe(meal => {
@@ -158,52 +124,5 @@ export class MealDetailComponent implements OnInit {
 
   updateAccount() {
     this.accountService.updateAccount(this.user).subscribe(user => this.user = user);
-  }
-
-  deleteMeal() {
-    if (this.meal) {
-      this.router.navigate(['/meal/list']);
-      this.mealService.deleteMeal(this.meal.id).subscribe();
-    }
-  }
-
-  changeStartTime(time: string) {
-    if (this.meal) {
-      let split = time.split(':');
-      let date = new Date(this.meal.startDate);
-      date.setHours(parseInt(split[0]));
-      date.setMinutes(parseInt(split[1]));
-      this.meal.startDate = date;
-    }
-  }
-
-  addRestriction() {
-    if (this.meal) {
-      if (!this.meal.dietaryRestrictions.includes(this.restriction) && this.restriction != '') {
-        this.meal?.dietaryRestrictions.push(this.restriction);
-        this.restriction = '';
-      }
-    }
-  }
-
-  deleteRestriction(id: number) {
-    if (this.meal) {
-      this.meal.dietaryRestrictions.splice(id, 1);
-    }
-  }
-
-  addTag() {
-    if (this.meal) {
-      if (!this.meal.tags.includes(this.tag) && this.tag != '') {
-        this.meal.tags.push(this.tag);
-        this.tag = '';
-      }
-    }
-  }
-
-  deleteTag(id: number) {
-    if (this.meal) {
-      this.meal.tags.splice(id, 1);
-    }
   }
 }

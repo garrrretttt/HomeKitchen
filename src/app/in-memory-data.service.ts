@@ -29,7 +29,7 @@ export class InMemoryDataService implements InMemoryDbService {
         location: '1234 56th St S Fargo, ND',
         startDate: new Date(2023, 5, 5, 17, 30), duration: 1,
         picture: 'https://i.imgur.com/e76p3L3.png',
-        chef: accounts[0], ratings: [4, 4, 4]
+        chefId: 0, ratings: [4, 4, 4]
       },
       {
         id: 1, dishName: 'Noodles with Tomato Sauces', partySize: 4,
@@ -38,7 +38,7 @@ export class InMemoryDataService implements InMemoryDbService {
         location: '1234 56th St S Fargo, ND',
         startDate: new Date(2023, 5, 5, 17, 30), duration: 1,
         picture: 'https://i.imgur.com/e76p3L3.png',
-        chef: accounts[0], ratings: [4, 4, 4]
+        chefId: 0, ratings: [4, 4, 4]
       },
       {
         id: 2, dishName: 'Red Sauce with Wormy Stuff', partySize: 4,
@@ -47,7 +47,7 @@ export class InMemoryDataService implements InMemoryDbService {
         location: '1234 56th St S Fargo, ND',
         startDate: new Date(2023, 5, 5, 17, 30), duration: 1,
         picture: 'https://i.imgur.com/e76p3L3.png',
-        chef: accounts[0], ratings: [4, 4, 4]
+        chefId: 0, ratings: [4, 4, 4]
       },
       {
         id: 3, dishName: 'Red Sauce with Wormy Stuff asdflkjasdf ;lkjasdf;lkj', partySize: 4,
@@ -56,7 +56,7 @@ export class InMemoryDataService implements InMemoryDbService {
         location: '1234 56th St S Fargo, ND',
         startDate: new Date(2023, 5, 5, 17, 30), duration: 1,
         picture: 'https://i.imgur.com/e76p3L3.png',
-        chef: accounts[0], ratings: [4, 4, 4]
+        chefId: 0, ratings: [4, 4, 4]
       },
       {
         id: 4, dishName: 'Red Sauce with Wormy Stuff', partySize: 4,
@@ -65,7 +65,7 @@ export class InMemoryDataService implements InMemoryDbService {
         location: '1234 56th St S Fargo, ND',
         startDate: new Date(2023, 5, 5, 17, 30), duration: 1,
         picture: 'https://i.imgur.com/e76p3L3.png',
-        chef: accounts[0], ratings: [4, 4, 4]
+        chefId: 0, ratings: [4, 4, 4]
       },
       {
         id: 5, dishName: 'Red Sauce with Wormy Stuff', partySize: 4,
@@ -74,7 +74,7 @@ export class InMemoryDataService implements InMemoryDbService {
         location: '1234 56th St S Fargo, ND',
         startDate: new Date(2023, 5, 5, 17, 30), duration: 1,
         picture: 'https://i.imgur.com/e76p3L3.png',
-        chef: accounts[0], ratings: [4, 4, 4]
+        chefId: 0, ratings: [4, 4, 4]
       },
       {
         id: 6, dishName: 'Red Sauce with Wormy Stuff', partySize: 4,
@@ -83,7 +83,7 @@ export class InMemoryDataService implements InMemoryDbService {
         location: '1234 56th St S Fargo, ND',
         startDate: new Date(2023, 5, 5, 17, 30), duration: 1,
         picture: 'https://i.imgur.com/e76p3L3.png',
-        chef: accounts[0], ratings: [4, 4, 4]
+        chefId: 0, ratings: [4, 4, 4]
       }
     ];
     return { meals };
