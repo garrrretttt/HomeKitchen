@@ -6,7 +6,7 @@ import { Meal } from '../meal';
 import { Account } from '../account';
 
 @Component({
-  selector: 'app-create-meal',
+  selector: 'create-meal',
   templateUrl: './create-meal.component.html',
   styleUrls: ['./create-meal.component.css']
 })
