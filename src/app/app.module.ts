@@ -14,6 +14,7 @@ import { EditMealComponent } from './edit-meal/edit-meal.component';
 import { CreateMealComponent } from './create-meal/create-meal.component';
 import { LoginComponent } from './login/login.component';
 import { MealCardComponent } from './meal-card/meal-card.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { MealCardComponent } from './meal-card/meal-card.component';
     EditMealComponent,
     CreateMealComponent,
     LoginComponent,
-    MealCardComponent
+    MealCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,11 +32,12 @@ import { MealCardComponent } from './meal-card/meal-card.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
-    ),
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
+      dataEncapsulation: false,
+    }),
+    MatTabsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
