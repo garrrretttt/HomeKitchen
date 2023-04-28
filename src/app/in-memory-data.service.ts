@@ -61,13 +61,9 @@ export class InMemoryDataService implements InMemoryDbService {
     picture: 'https://i.imgur.com/e76p3L3.png', 
     chef: accounts[0], ratings: [4, 4, 4] }
     ];
-    return { meals };
+    return { meals, accounts };
+    
   }
 
-  genMealId(meals: Meal[]): number {
-    return meals.length > 0 ? Math.max(...meals.map(meal => meal.id)) + 1 : 11;
-  }
-  genAccountId(acounts: Account[]): number {
-    return acounts.length > 0 ? Math.max(...acounts.map(acount => acount.id)) + 1 : 11;
-  }
+  
 }

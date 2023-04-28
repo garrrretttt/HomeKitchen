@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Account } from '../account';
 import { GlobalAccountService } from '../global-account.service';
+import { Meal } from '../meal';
 import { User } from '../users';
 @Component({
   selector: 'app-login',
@@ -10,7 +12,10 @@ import { User } from '../users';
 export class LoginComponent implements OnInit{
 
 constructor(private globalAccountService:
-   GlobalAccountService){}
+   GlobalAccountService,
+   private router: Router
+
+   ){}
 
 signupUsers: GlobalAccountService[] = [];
 
@@ -49,13 +54,17 @@ ngOnInit(): void {
 // }
 
 onSignUp2(): void{
-  this.globalAccountService.getUsers().subscribe
-  (users => this.signupObj = users);
-  this.signupObj = {
-    userName: ' ',
-    email: ' ',
-    password: ' '
-  };
+  let newAccount = {
+    //isChef: false,
+    //name: '',
+    //dietaryRestrictions: [],
+    //bio: '',
+    //profilePicture: '',
+    //ratings: {'Diner': [], 'Chef': []},
+    username: this.signupObj.userName,
+    password: this.signupObj.password,
+  } as unknown as Account
+  this.globalAccountService.addAccount(newAccount)
 }
 
 // onLogin(){
@@ -70,8 +79,13 @@ onSignUp2(): void{
 
 onLogin2(){
 
-this.globalAccountService.getUsers().subscribe(
-  
+this.globalAccountService.getAccount(this.loginObj.userName).subscribe(
+  m => {
+    if(m.password == this.loginObj.password){
+    this.globalAccountService.setActiveUser(m.id)
+    this.router.navigate(['/home'])
+    }
+    }
 )
 
 }

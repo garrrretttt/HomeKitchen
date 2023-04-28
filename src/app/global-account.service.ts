@@ -11,6 +11,8 @@ import { User } from './users';
 })
 export class GlobalAccountService {
 
+  userId?: number;
+
   constructor(private http: HttpClient) { }
 
   signupObj:any = {
@@ -23,7 +25,7 @@ export class GlobalAccountService {
     password: ' '
   };
 
-  private usersUrl = 'api/login-component';
+  private usersUrl = 'api/accounts';
   httpOptions = {
     headers: new HttpHeaders({ 
       'Content-Type':'application/json' })
@@ -43,6 +45,41 @@ export class GlobalAccountService {
     return this.http.get<User>(url).pipe(
       catchError(this.handleError<User>(`getAccount id=${userName}`))
     );
+  }
+
+  getAccount(userName: string): Observable<Account> {
+    const url = `${this.usersUrl}/${userName}`;
+    return this.http.get<Account>(url).pipe(
+      catchError(this.handleError<Account>(`this.getAccount userName=${userName}`))
+    );
+  }
+
+  // onSignUp2(): void{
+  //   this.getUsers().subscribe
+  //   (users => this.signupObj = users);
+  //   this.signupObj = {
+  //     userName: ' ',
+  //     email: ' ',
+  //     password: ' '
+  //   };
+  // }
+
+  addAccount(account: Account): Observable<Account> {
+    return this.http.post<Account>(this.usersUrl, account, this.httpOptions).pipe(
+      catchError(this.handleError<Account>('addAccount'))
+    );
+  }
+
+  updateAccount(accounts: Account): Observable<any> {
+    return this.http.put(this.usersUrl, accounts, this.httpOptions).pipe(
+      catchError(this.handleError<any>('updateAccount'))
+    );
+  }
+
+  setActiveUser(id: number){
+
+    this.userId = id;
+
   }
 
 
