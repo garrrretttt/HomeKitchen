@@ -4,6 +4,7 @@ import { MealDetailComponent } from './meal/meal-detail.component';
 import { MealListComponent } from './meal-list/meal-list.component';
 import { LoginComponent } from './login/login.component';
 import { EditMealComponent } from './edit-meal/edit-meal.component';
+import { CalendarComponent } from './calendar/calendar.component';
 import { CreateMealComponent } from './create-meal/create-meal.component';
 
 const routes: Routes = [
@@ -12,12 +13,12 @@ const routes: Routes = [
   { path: 'meal/view/:id', component: MealDetailComponent },
   { path: 'meal/edit/:id', component: EditMealComponent },
   { path: 'meal/create', component: CreateMealComponent },
-  { path: 'meal/list', component: MealListComponent },
-  { path: 'login', component: LoginComponent}
+  { path: 'calendar', component: CalendarComponent },
+  { path: 'login', component: LoginComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

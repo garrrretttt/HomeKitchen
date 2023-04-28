@@ -10,15 +10,23 @@ import { AccountService } from '../account.service';
 @Component({
   selector: 'meal-detail',
   templateUrl: './meal-detail.component.html',
-  styleUrls: ['./meal-detail.component.css']
+  styleUrls: ['./meal-detail.component.css'],
 })
 export class MealDetailComponent implements OnInit {
   @Input() id?: number;
   meal?: Meal;
   user: Account = {
-    id: 0, isChef: true, name: 'Master', dietaryRestrictions: ['None'],
-    bio: 'I am master chef', profilePicture: '', mealsBooked: [],
-    ratings: { 'Diner': [5], 'Chef': [4, 5, 4] }, username: 'master', password: 'account'
+    id: 0,
+    isChef: true,
+    name: 'Master',
+    dietaryRestrictions: ['None'],
+    bio: 'I am master chef',
+    profilePicture: '',
+    mealsBooked: [],
+    mealsCreated: [],
+    ratings: { Diner: [5], Chef: [4, 5, 4] },
+    username: 'master',
+    password: 'account',
   };
   details: boolean = false;
   hover: boolean = false;
@@ -35,8 +43,8 @@ export class MealDetailComponent implements OnInit {
     private mealService: MealService,
     private accountService: AccountService,
     private location: Location,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getUser();
@@ -49,18 +57,37 @@ export class MealDetailComponent implements OnInit {
 
   getMeal(): void {
     if (typeof this.id != 'undefined') {
-      this.mealService.getMeal(this.id)
-        .subscribe(meal => this.meal = meal);
-    }
-    else if (this.router.url.match('/meal/view')) {
+      this.mealService.getMeal(this.id).subscribe((meal) => (this.meal = meal));
+    } else if (this.router.url.match('/meal/view')) {
       this.details = true;
       const id = Number(this.route.snapshot.paramMap.get('id'));
-      this.mealService.getMeal(id)
-        .subscribe(meal => {
+      this.mealService.getMeal(id).subscribe((meal) => {
+        this.meal = meal;
+        if (this.meal.accountsBooked.includes(this.user.id)) {
+          this.isBooked = true;
+        }
+      });
+    } else if (this.router.url.match('/meal/create')) {
+      this.mealService
+        .addMeal({
+          dishName: '',
+          partySize: 0,
+          accountsBooked: [],
+          tags: [],
+          dietaryRestrictions: [],
+          cost: 0,
+          location: '',
+          startDate: new Date(),
+          duration: 0,
+          picture: 'https://i.imgur.com/e76p3L3.png',
+          chef: this.user,
+          ratings: [],
+        } as unknown as Meal)
+        .subscribe((meal) => {
           this.meal = meal;
-          if (this.meal.accountsBooked.includes(this.user.id)) {
-            this.isBooked = true;
-          }
+          this.details = true;
+          this.edit = true;
+          this.newMeal = true;
         });
     }
   }
@@ -70,7 +97,7 @@ export class MealDetailComponent implements OnInit {
   }
 
   cardClick(id: number): void {
-    this.router.navigate([`/meal/view/${id}`])
+    this.router.navigate([`/meal/view/${id}`]);
   }
 
   bookMeal() {
@@ -85,9 +112,13 @@ export class MealDetailComponent implements OnInit {
 
   unbookMeal() {
     if (this.meal) {
-      let userIndex = this.meal.accountsBooked.findIndex(id => id == this.user.id);
+      let userIndex = this.meal.accountsBooked.findIndex(
+        (id) => id == this.user.id
+      );
       this.meal.accountsBooked.splice(userIndex, 1);
-      let mealIndex = this.user.mealsBooked.findIndex(id => id == this.meal?.id);
+      let mealIndex = this.user.mealsBooked.findIndex(
+        (id) => id == this.meal?.id
+      );
       this.user.mealsBooked.splice(mealIndex, 1);
       this.updateMeal();
       //this.updateAccount();
@@ -97,7 +128,7 @@ export class MealDetailComponent implements OnInit {
 
   updateMeal() {
     if (this.meal) {
-      this.mealService.updateMeal(this.meal).subscribe(meal => {
+      this.mealService.updateMeal(this.meal).subscribe((meal) => {
         if (this.meal) {
           this.newMeal = false;
           this.router.navigate(['/meal/view', this.meal.id]);
@@ -107,6 +138,8 @@ export class MealDetailComponent implements OnInit {
   }
 
   updateAccount() {
-    this.accountService.updateAccount(this.user).subscribe(user => this.user = user);
+    this.accountService
+      .updateAccount(this.user)
+      .subscribe((user) => (this.user = user));
   }
 }
