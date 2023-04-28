@@ -8,8 +8,8 @@ import { MealService } from '../meal.service';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
 })
-export class CalendarComponent {
-  account = {
+export class CalendarComponent implements OnInit {
+  account: Account = {
     id: 1,
     isChef: false,
     name: 'Alan Turing',
