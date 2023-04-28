@@ -30,6 +30,15 @@ export class MealService {
     );
   }
 
+  isValidMeal(meal: Meal): boolean {
+      if (meal?.dishName != '' && meal.cost != 0 && meal.partySize != 0
+        && new Date(meal.startDate) >= new Date()
+        && meal.duration != 0 && meal.location != '') {
+        return true;
+    }
+    return false;
+  }
+
   addMeal(meal: Meal): Observable<Meal> {
     return this.http.post<Meal>(this.mealsUrl, meal, this.httpOptions).pipe(
       catchError(this.handleError<Meal>('addMeal'))

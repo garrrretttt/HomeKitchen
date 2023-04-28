@@ -12,7 +12,9 @@ import { Location } from '@angular/common';
 })
 export class MealCardComponent {
 
-  @Input() id: number = 0;
+  @Input() id?: number;
+  @Input() manage: boolean = false;
+  selected: boolean = false;
   meal?: Meal;
 
   constructor(
@@ -28,14 +30,23 @@ export class MealCardComponent {
   }
 
   cardClick(id: number): void {
-    this.router.navigate([`/meal/view/${id}`])
+    if (!this.manage) {
+      this.router.navigate([`/meal/view/${id}`])
+    }
+    else {
+      this.toggleSelected();
+    }
+  }
+
+  toggleSelected(){
+    this.selected = !this.selected;
   }
 
   getMeal(): void {
-   // if (typeof this.id != 'undefined') {
+    if (typeof this.id != 'undefined') {
       this.mealService.getMeal(this.id)
         .subscribe(meal => this.meal = meal);
-    //}
+    }
   }
 
 }

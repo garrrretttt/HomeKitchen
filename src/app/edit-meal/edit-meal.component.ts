@@ -35,20 +35,9 @@ export class EditMealComponent {
     this.location.back();
   }
 
-  isValidMeal(): boolean {
-    if (this.meal) {
-      if (this.meal?.dishName != '' && this.meal.cost != 0 && this.meal.partySize != 0
-        && new Date(this.meal.startDate) >= new Date()
-        && this.meal.duration != 0 && this.meal.location != '') {
-        return true;
-      }
-    }
-    return false;
-  }
-
   onSave() {
     if (this.meal) {
-      if (this.isValidMeal()) {
+      if (this.mealService.isValidMeal(this.meal)) {
         this.updateMeal();
       }
     }

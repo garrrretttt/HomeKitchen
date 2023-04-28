@@ -37,18 +37,8 @@ export class CreateMealComponent {
     private router: Router,
   ) { }
 
-  createMeal(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    let newMeal = {
-      dishName: this.dishName, partySize: this.partySize,
-      accountsBooked: this.accountsBooked, tags: this.tags,
-      dietaryRestrictions: this.dietaryRestrictions, cost: this.cost,
-      location: this.mealLocation,
-      startDate: this.startDate, duration: this.duration,
-      picture: this.picture,
-      chefId: this.chefId, ratings: []
-    } as unknown as Meal;
-    this.mealService.addMeal(newMeal).subscribe(meal => this.meal = meal);
+  createMeal(meal: Meal) {
+    this.mealService.addMeal(meal).subscribe(meal => this.router.navigate([`/meal/view/${meal.id}`]));
   }
 
   goBack(): void {
@@ -67,10 +57,17 @@ export class CreateMealComponent {
   }
 
   onCreate() {
-    if (this.meal) {
-      if (this.isValidMeal()) {
-        this.createMeal();
-      }
+    let newMeal = {
+      dishName: this.dishName, partySize: this.partySize,
+      accountsBooked: this.accountsBooked, tags: this.tags,
+      dietaryRestrictions: this.dietaryRestrictions, cost: this.cost,
+      location: this.mealLocation,
+      startDate: this.startDate, duration: this.duration,
+      picture: this.picture,
+      chefId: this.chefId, ratings: this.ratings
+    } as unknown as Meal;
+    if (this.mealService.isValidMeal(newMeal)) {
+      this.createMeal(newMeal);
     }
   }
 

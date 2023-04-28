@@ -1,12 +1,17 @@
 <div *ngIf="meal" class="container">
-    <div (click)="cardClick(meal.id)" class="card list-card mb-3">
-        <img src="{{meal.picture}}" class="card-img-top" style="height: 15rem;">
-        <div class="card-body">
-            <h5 class="card-title" style="max-height: 3rem; overflow-y: auto;
-            overflow-x: hidden;">{{meal.dishName}}</h5>
-            <h6 class="card-subtitle text-secondary mb-2">${{meal.cost}} |
-                {{meal.partySize-meal.accountsBooked.length}}/{{meal.partySize}} seats available</h6>
-            <h6 class="card-subtitle text-secondary">{{meal.startDate | date: 'short'}}</h6>
+    <div (click)="cardClick(meal.id)" [class.selected]="selected" class="card list-card">
+        <div class="row no-gutters p-0 m-0">
+            <div class="col-4 p-0 m-0">
+                <img src="{{meal.picture}}" class="card-img p-0 m-0" style="width:10rem;" />
+            </div>
+            <div class="col-8 p-0 m-0">
+                <div class="card-body float-end p-2 m-0">
+                    <h5 class="card-title" >{{meal.dishName}}</h5>
+                    <h6 class="card-subtitle text-secondary">${{meal.cost}} |
+                        {{meal.partySize-meal.accountsBooked.length}}/{{meal.partySize}} seats available</h6>
+                    <h6 class="card-subtitle text-secondary">{{meal.startDate | date: 'short'}}</h6>
+                </div>
+            </div>
         </div>
     </div>
 </div>
