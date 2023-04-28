@@ -1,0 +1,15 @@
+.list-card{
+    transition: 0.25s;
+    max-width: 45rem;
+    max-height: 100rem;
+}
+
+.list-card:hover{
+    transform: scale(1.05);
+    box-shadow: 5px 5px 5px gray
+}
+
+.selected{
+    transform: scale(1.05);
+    box-shadow: 5px 5px 5px red;
+}

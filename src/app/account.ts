@@ -1,3 +1,5 @@
+import { Meal } from "./meal";
+
 export interface Account {
     id: number
     isChef: boolean;
@@ -8,6 +10,7 @@ export interface Account {
     ratings: {'Diner': number[], 'Chef': number[]};
     username: string;
     password: string;
+    mealsBooked: number[]; //stored by id
     // Name 
     // Dietary Restrictions 
     // Bio 

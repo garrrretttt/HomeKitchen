@@ -5,15 +5,16 @@ export interface Meal {
     id: number;
     dishName: string;
     partySize: number;
-    AmountBooked: number;
     tags: string[];
     dietaryRestrictions: string[];
     cost: number;
     location: string;
-    timeStart: string;
+    startDate: Date;
+    duration: number;
     picture: string;
-    chef: Account;
+    chefId: number;
     ratings: number[];
+    accountsBooked: number[]; //stored by id
     // Dish 
     // Party Size 
     // People that have booked 
