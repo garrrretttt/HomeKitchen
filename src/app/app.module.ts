@@ -13,7 +13,6 @@ import { MealListComponent } from './meal-list/meal-list.component';
 import { EditMealComponent } from './edit-meal/edit-meal.component';
 import { CreateMealComponent } from './create-meal/create-meal.component';
 import { LoginComponent } from './login/login.component';
-import { FormsModule } from '@angular/forms';
 import { MealCardComponent } from './meal-card/meal-card.component';
 
 @NgModule({

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AccountService } from './account.service';
+import { GlobalAccountService } from './account.service';
 
-describe('AccountService', () => {
-  let service: AccountService;
+describe('GlobalAccountService', () => {
+  let service: GlobalAccountService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AccountService);
+    service = TestBed.inject(GlobalAccountService);
   });
 
   it('should be created', () => {

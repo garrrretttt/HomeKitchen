@@ -5,7 +5,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-edit-meal',
+  selector: 'edit-meal',
   templateUrl: './edit-meal.component.html',
   styleUrls: ['./edit-meal.component.css']
 })
