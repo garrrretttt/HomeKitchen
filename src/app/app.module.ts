@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
@@ -9,18 +10,25 @@ import { AppRoutingModule } from './app-routing.module';
 import { MealDetailComponent } from './meal/meal-detail.component';
 import { RouterModule } from '@angular/router';
 import { MealListComponent } from './meal-list/meal-list.component';
+import { EditMealComponent } from './edit-meal/edit-meal.component';
+import { CreateMealComponent } from './create-meal/create-meal.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
+import { MealCardComponent } from './meal-card/meal-card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MealDetailComponent,
     MealListComponent,
-    LoginComponent
+    EditMealComponent,
+    CreateMealComponent,
+    LoginComponent,
+    MealCardComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
