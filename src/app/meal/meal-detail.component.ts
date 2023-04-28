@@ -63,22 +63,6 @@ export class MealDetailComponent implements OnInit {
           }
         });
     }
-    else if (this.router.url.match('/meal/create')) {
-      this.mealService.addMeal({
-        dishName: '', partySize: 0,
-        accountsBooked: [], tags: [],
-        dietaryRestrictions: [], cost: 0,
-        location: '',
-        startDate: new Date(), duration: 0,
-        picture: 'https://i.imgur.com/e76p3L3.png',
-        chef: this.user, ratings: []
-      } as unknown as Meal).subscribe(meal => {
-        this.meal = meal;
-        this.details = true;
-        this.edit = true;
-        this.newMeal = true;
-      });
-    }
   }
 
   goBack(): void {
