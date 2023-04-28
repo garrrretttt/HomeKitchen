@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MealDetailComponent } from './meal/meal-detail.component';
 import { MealListComponent } from './meal-list/meal-list.component';
 import { EditMealComponent } from './edit-meal/edit-meal.component';
+import { CalendarComponent } from './calendar/calendar.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -10,11 +11,11 @@ const routes: Routes = [
   { path: 'meal/view/:id', component: MealDetailComponent },
   { path: 'meal/edit/:id', component: EditMealComponent },
   { path: 'meal/create', component: MealDetailComponent },
-  { path: 'meal/list', component: MealListComponent },
+  { path: 'calendar', component: CalendarComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
