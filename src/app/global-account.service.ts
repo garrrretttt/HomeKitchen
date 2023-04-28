@@ -4,7 +4,6 @@ import { LoginComponent } from './login/login.component';
 import { Account } from './account';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { User } from './users';
 
 @Injectable({
   providedIn: 'root'
@@ -31,26 +30,19 @@ export class GlobalAccountService {
       'Content-Type':'application/json' })
   };
 
-  getUsers(): Observable<User[]>{
+  getUsers(): Observable<Account[]>{
 
-    return this.http.get<User[]>(this.usersUrl)
+    return this.http.get<Account[]>(this.usersUrl)
       .pipe(
-        catchError(this.handleError<User[]>('getUsers', []))
+        catchError(this.handleError<Account[]>('getUsers', []))
       );
 
   }
 
-  getUser(userName: string, password: string){
-    const url = `${this.usersUrl}/${userName && password}`;
-    return this.http.get<User>(url).pipe(
-      catchError(this.handleError<User>(`getAccount id=${userName}`))
-    );
-  }
-
-  getAccount(userName: string): Observable<Account> {
-    const url = `${this.usersUrl}/${userName}`;
+  getAccount(id: number): Observable<Account> {
+    const url = `${this.usersUrl}/${id}`;
     return this.http.get<Account>(url).pipe(
-      catchError(this.handleError<Account>(`this.getAccount userName=${userName}`))
+      catchError(this.handleError<Account>(`user id=${id}`))
     );
   }
 
