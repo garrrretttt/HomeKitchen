@@ -1,28 +1,55 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { Account } from './account';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
+import { Firestore, collectionData } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import * as firebase from 'firebase/compat';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
 
-  userId?: number;
+  userId?: string;
+  user: any;
+  fireStore: Firestore = inject(Firestore);
+  fireAuth: AngularFireAuth = inject(AngularFireAuth);
 
-  constructor(private http: HttpClient) { }
+  accountRef = collection(this.fireStore, 'accounts');
 
-  signupObj: any = {
-    userName: ' ',
-    email: ' ',
-    password: ' '
-  };
-  loginObj: any = {
-    userName: ' ',
-    password: ' '
-  };
+  constructor(
+    private http: HttpClient,
+  ) {
+    this.fireAuth.onAuthStateChanged(user => {
+      if (user) {
+        this.userId = user.uid;
+        this.getUserByUid(this.userId)
+      }
+      else {
+        this.user = undefined;
+      }
+    })
+  }
+
+  async getUserByUid(userId: string) {
+    let q = query(this.accountRef, where('uid', '==', userId));
+    let querySnapshot = await getDocs(q);
+    let data;
+    querySnapshot.forEach((doc) => {
+      this.user = doc.data();
+    });
+  }
+
+  userIsChef(): boolean {
+    if (this.user) {
+      return this.user['isChef'];
+    }
+    return false;
+  }
 
   private usersUrl = 'api/accounts';
   httpOptions = {
@@ -30,6 +57,12 @@ export class AccountService {
       'Content-Type': 'application/json'
     })
   };
+
+  getUid() {
+    if (this.user) {
+      return this.user['uid'];
+    }
+  }
 
   getAccounts(): Observable<Account[]> {
 
@@ -48,6 +81,7 @@ export class AccountService {
   }
 
   addAccount(account: Account): Observable<Account> {
+
     return this.http.post<Account>(this.usersUrl, account, this.httpOptions).pipe(
       catchError(this.handleError<Account>('addAccount'))
     );
@@ -59,10 +93,11 @@ export class AccountService {
     );
   }
 
-  setActiveUser(id: number) {
-
-    this.userId = id;
-
+  getActiveUser(): Observable<Account> {
+    const url = `${this.usersUrl}/${this.userId}`;
+    return this.http.get<Account>(url).pipe(
+      catchError(this.handleError<Account>(`user id=${this.userId}`))
+    );
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
