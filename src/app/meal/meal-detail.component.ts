@@ -23,7 +23,6 @@ export class MealDetailComponent implements OnInit {
   details: boolean = false;
   hover: boolean = false;
   onHover: string = '';
-  isChef: boolean = true;
   edit: boolean = false;
   restriction: string = '';
   tag: string = '';
@@ -33,7 +32,7 @@ export class MealDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private mealService: MealService,
-    private accountService: AccountService,
+    public accountService: AccountService,
     private location: Location,
     private router: Router,
   ) { }

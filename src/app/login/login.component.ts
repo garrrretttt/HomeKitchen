@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Account } from '../account';
 import { AccountService } from '../account.service';
 import { Meal } from '../meal';
+import { Firestore } from '@angular/fire/firestore';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -13,6 +15,7 @@ export class LoginComponent {
   constructor(
     private accountService: AccountService,
     private router: Router,
+    private db: Firestore,
   ) { }
 
   signupObj: any = {
@@ -25,6 +28,8 @@ export class LoginComponent {
     password: ''
   };
 
+  @Output( )  userId : EventEmitter<number> = new EventEmitter<number>();
+
   onSignUp(): void {
     let newAccount = {
       username: this.signupObj.userName,
@@ -34,14 +39,14 @@ export class LoginComponent {
       this.signupObj.userName = '';
       this.signupObj.password = '';
       this.signupObj.email = '';
-    })
+    });
   }
 
   onLogin() {
     this.accountService.getAccounts().subscribe((users: Account[]) => {
       for (var user of users) {
         if (user.username == this.loginObj.userName && user.password == this.loginObj.password) {
-          this.accountService.setActiveUser(user.id);
+          // this.accountService.setActiveUser(user.id);
           this.router.navigate(['/home']);
         }
       }
