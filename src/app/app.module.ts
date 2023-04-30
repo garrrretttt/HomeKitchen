@@ -8,6 +8,11 @@ import { FirebaseUIModule, firebase, firebaseui } from 'firebaseui-angular';
 import { getFirestore, provideFirestore } from "@angular/fire/firestore";
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatButtonModule} from '@angular/material/button';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -21,12 +26,14 @@ import { MealCardComponent } from './meal-card/meal-card.component';
 import { provideFirebaseApp } from '@angular/fire/app';
 import { initializeApp } from 'firebase/app';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { CreateAccountComponent } from './create-account/create-account.component';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
   signInOptions: [
     {
-      provider: firebase.auth.EmailAuthProvider.PROVIDER_ID
+      provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      requireDisplayName: false
     },
   ],
 };
@@ -39,7 +46,8 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     EditMealComponent,
     CreateMealComponent,
     LoginComponent,
-    MealCardComponent
+    MealCardComponent,
+    CreateAccountComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +62,11 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
     FirebaseUIModule.forRoot(firebaseUiAuthConfig),
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    BrowserAnimationsModule,
   ],
   providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebase }],
   bootstrap: [AppComponent]
