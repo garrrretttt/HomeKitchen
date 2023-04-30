@@ -6,7 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, Subject, of } from 'rxjs';
 import { Firestore, collectionData } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import * as firebase from 'firebase/compat';
 
 @Injectable({
@@ -44,11 +44,26 @@ export class AccountService {
     });
   }
 
+  getUser(){
+    return this.user;
+  }
+
   userIsChef(): boolean {
     if (this.user) {
       return this.user['isChef'];
     }
     return false;
+  }
+
+  async accountExists(): Promise<boolean>{
+    let docRef = doc(this.accountRef, this.userId);
+    let docSnap = await getDoc(docRef);
+    if(docSnap.exists()){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
   private usersUrl = 'api/accounts';
@@ -59,9 +74,10 @@ export class AccountService {
   };
 
   getUid() {
-    if (this.user) {
-      return this.user['uid'];
+    if (this.userId) {
+      return this.userId;
     }
+    return undefined;
   }
 
   getAccounts(): Observable<Account[]> {
