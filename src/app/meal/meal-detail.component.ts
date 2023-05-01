@@ -4,8 +4,8 @@ import { Location } from '@angular/common';
 
 import { Meal } from '../meal';
 import { MealService } from '../meal.service';
-import { Account } from '../account';
 import { AccountService } from '../account.service';
+import { Account } from '../account';
 
 @Component({
   selector: 'meal-detail',
@@ -13,20 +13,11 @@ import { AccountService } from '../account.service';
   styleUrls: ['./meal-detail.component.css']
 })
 export class MealDetailComponent implements OnInit {
-  @Input() id?: number;
+  @Input() id?: string;
   meal?: Meal;
-  user: Account = {
-    id: 0, isChef: true, name: 'Master', dietaryRestrictions: ['None'],
-    bio: 'I am master chef', profilePicture: '', mealsBooked: [],
-    ratings: { 'Diner': [5], 'Chef': [4, 5, 4] }, username: 'master', password: 'account'
-  };
-  details: boolean = false;
-  hover: boolean = false;
-  onHover: string = '';
-  edit: boolean = false;
+  chef?: Account;
   restriction: string = '';
   tag: string = '';
-  newMeal: boolean = false;
   isBooked: boolean = false;
 
   constructor(
@@ -37,75 +28,44 @@ export class MealDetailComponent implements OnInit {
     private router: Router,
   ) { }
 
-  ngOnInit(): void {
-    this.getUser();
-    this.getMeal();
+  ngOnInit() {
+    this.getMeal().then(async (meal: Meal) => {
+      this.meal = meal;
+      this.isBooked = this.accountService.hasBookedMeal(this.meal.id);
+      console.log(this.meal.chefId);
+      this.accountService.getAccountByUid(this.meal.chefId).then((chef: Account) => {
+        this.chef = chef;
+        console.log(chef);
+      })
+    });
   }
 
-  getUser() {
-    // get active user here
-  }
-
-  getMeal(): void {
-    if (typeof this.id != 'undefined') {
-      this.mealService.getMeal(this.id)
-        .subscribe(meal => this.meal = meal);
-    }
-    else if (this.router.url.match('/meal/view')) {
-      this.details = true;
-      const id = Number(this.route.snapshot.paramMap.get('id'));
-      this.mealService.getMeal(id)
-        .subscribe(meal => {
-          this.meal = meal;
-          if (this.meal.accountsBooked.includes(this.user.id)) {
-            this.isBooked = true;
-          }
-        });
-    }
+  async getMeal(): Promise<Meal> {
+    const id = String(this.route.snapshot.paramMap.get('id'));
+    let meal = await this.mealService.getMeal(id);
+    return meal
   }
 
   goBack(): void {
     this.location.back();
   }
 
-  cardClick(id: number): void {
-    this.router.navigate([`/meal/view/${id}`])
-  }
-
   bookMeal() {
     if (this.meal) {
-      this.meal.accountsBooked.push(this.user.id);
-      this.user.mealsBooked.push(this.meal.id);
-      this.updateMeal();
-      //this.updateAccount();
-      this.isBooked = true;
+      this.accountService.bookMeal(this.meal.id);
     }
   }
 
   unbookMeal() {
     if (this.meal) {
-      let userIndex = this.meal.accountsBooked.findIndex(id => id == this.user.id);
-      this.meal.accountsBooked.splice(userIndex, 1);
-      let mealIndex = this.user.mealsBooked.findIndex(id => id == this.meal?.id);
-      this.user.mealsBooked.splice(mealIndex, 1);
-      this.updateMeal();
-      //this.updateAccount();
-      this.isBooked = false;
+      this.accountService.unbookMeal(this.meal.id);
     }
   }
 
   updateMeal() {
     if (this.meal) {
-      this.mealService.updateMeal(this.meal).subscribe(meal => {
-        if (this.meal) {
-          this.newMeal = false;
-          this.router.navigate(['/meal/view', this.meal.id]);
-        }
-      });
+      this.mealService.updateMeal(this.meal.id, this.meal);
+      this.router.navigate(['/meal/view', this.meal.id]);
     }
-  }
-
-  updateAccount() {
-    this.accountService.updateAccount(this.user).subscribe(user => this.user = user);
   }
 }

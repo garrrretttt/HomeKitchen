@@ -26,9 +26,9 @@ export class EditMealComponent {
     this.getMeal();
   }
 
-  getMeal(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.mealService.getMeal(id).subscribe(meal => this.meal = meal);
+  async getMeal(): Promise<void> {
+    const id = String(this.route.snapshot.paramMap.get('id'));
+    this.meal = await this.mealService.getMeal(id);
   }
 
   goBack(): void {
@@ -45,11 +45,8 @@ export class EditMealComponent {
 
   updateMeal() {
     if (this.meal) {
-      this.mealService.updateMeal(this.meal).subscribe(meal => {
-        if (this.meal) {
-          this.router.navigate(['/meal/view', this.meal.id]);
-        }
-      });
+      this.mealService.updateMeal(this.meal.id, this.meal);
+      this.router.navigate(['/meal/view', this.meal.id]);
     }
   }
 
@@ -59,11 +56,8 @@ export class EditMealComponent {
 
   deleteMeal() {
     if (this.meal) {
-      this.mealService.deleteMeal(this.meal.id).subscribe(() => {
-        this.router.navigate(['/meal/list']);
-        console.log('deleted')
-      }
-      );
+      this.mealService.deleteMeal(this.meal.id);
+      this.router.navigate(['/meal/list']);
     }
   }
 

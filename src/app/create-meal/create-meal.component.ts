@@ -4,6 +4,7 @@ import { MealService } from '../meal.service';
 import { Location } from '@angular/common';
 import { Meal } from '../meal';
 import { Account } from '../account';
+import { AccountService } from '../account.service';
 
 @Component({
   selector: 'create-meal',
@@ -26,19 +27,25 @@ export class CreateMealComponent {
   startDate: Date = new Date();
   duration: number = 0;
   picture: string = 'https://i.imgur.com/e76p3L3.png';
-  chefId: number = 0; // get chef id
+  chef?: Account; // get chef id
   ratings: number[] = [];
   accountsBooked: number[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private mealService: MealService,
+    private accountService: AccountService,
     private location: Location,
     private router: Router,
   ) { }
 
-  createMeal(meal: Meal) {
-    this.mealService.addMeal(meal).subscribe(meal => this.router.navigate([`/meal/view/${meal.id}`]));
+  async ngOnInit(){
+    this.chef = await this.accountService.getAccount();
+  }
+
+  async createMeal(meal: Meal) {
+    let id = await this.mealService.createMeal(meal);
+    this.router.navigate([`/meal/view/${id}`])
   }
 
   goBack(): void {
@@ -64,25 +71,16 @@ export class CreateMealComponent {
       location: this.mealLocation,
       startDate: this.startDate, duration: this.duration,
       picture: this.picture,
-      chefId: this.chefId, ratings: this.ratings
+      chefId: this.chef?.uid, ratings: this.ratings
     } as unknown as Meal;
     if (this.mealService.isValidMeal(newMeal)) {
       this.createMeal(newMeal);
     }
+
   }
 
   onDelete() {
-    this.deleteMeal();
-  }
-
-  deleteMeal() {
-    if (this.meal) {
-      this.mealService.deleteMeal(this.meal.id).subscribe(() => {
-        this.router.navigate(['/meal/list']);
-        console.log('deleted')
-      }
-      );
-    }
+    this.router.navigate(['/meal/list']);
   }
 
   changeStartTime(time: string) {

@@ -4,7 +4,6 @@ import { AccountService } from './account.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FirebaseUISignInFailure, FirebaseUISignInSuccessWithAuthResult } from 'firebaseui-angular';
 import { Firestore } from '@angular/fire/firestore';
-import { collection, doc, setDoc } from 'firebase/firestore';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +19,6 @@ export class AppComponent {
   constructor(
     public accountService: AccountService,
     private router: Router,
-    // public db: Firestore
   ) { }
 
   ngOnInit() { }
