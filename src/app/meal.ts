@@ -1,8 +1,5 @@
-import { Time } from "@angular/common";
-import { Account } from "./account";
-
 export interface Meal {
-    id: number;
+    id: string;
     dishName: string;
     partySize: number;
     tags: string[];
@@ -12,17 +9,7 @@ export interface Meal {
     startDate: Date;
     duration: number;
     picture: string;
-    chefId: number;
+    chefId: string;
     ratings: number[];
     accountsBooked: number[]; //stored by id
-    // Dish 
-    // Party Size 
-    // People that have booked 
-    // Children / Pet tags 
-    // Dietary Restrictions 
-    // Price 
-    // Location 
-    // Time 
-    // Picture of Meal 
-    // Chef 
 }

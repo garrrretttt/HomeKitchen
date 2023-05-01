@@ -1,13 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { LoginComponent } from './login/login.component';
 import { Account } from './account';
-import { catchError, map, tap } from 'rxjs/operators';
-import { Observable, Subject, of } from 'rxjs';
-import { Firestore, collectionData } from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
-import * as firebase from 'firebase/compat';
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -15,63 +10,23 @@ import * as firebase from 'firebase/compat';
 export class AccountService {
 
   userId?: string;
-  user: any;
+  account?: Account;
   fireStore: Firestore = inject(Firestore);
   fireAuth: AngularFireAuth = inject(AngularFireAuth);
 
   accountRef = collection(this.fireStore, 'accounts');
 
-  constructor(
-    private http: HttpClient,
-  ) {
-    this.fireAuth.onAuthStateChanged(user => {
+  constructor() {
+    this.fireAuth.onAuthStateChanged(async user => {
       if (user) {
         this.userId = user.uid;
-        this.getUserByUid(this.userId)
+        this.account = await this.getAccountByUid(this.userId)
       }
       else {
-        this.user = undefined;
+        this.account = undefined;
       }
     })
   }
-
-  async getUserByUid(userId: string) {
-    let q = query(this.accountRef, where('uid', '==', userId));
-    let querySnapshot = await getDocs(q);
-    let data;
-    querySnapshot.forEach((doc) => {
-      this.user = doc.data();
-    });
-  }
-
-  getUser(){
-    return this.user;
-  }
-
-  userIsChef(): boolean {
-    if (this.user) {
-      return this.user['isChef'];
-    }
-    return false;
-  }
-
-  async accountExists(): Promise<boolean>{
-    let docRef = doc(this.accountRef, this.userId);
-    let docSnap = await getDoc(docRef);
-    if(docSnap.exists()){
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
-
-  private usersUrl = 'api/accounts';
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
 
   getUid() {
     if (this.userId) {
@@ -80,49 +35,86 @@ export class AccountService {
     return undefined;
   }
 
-  getAccounts(): Observable<Account[]> {
-
-    return this.http.get<Account[]>(this.usersUrl)
-      .pipe(
-        catchError(this.handleError<Account[]>('getUsers', []))
-      );
-
+  async getAccountByUid(userId: string): Promise<Account> {
+    let q = query(this.accountRef, where('uid', '==', userId));
+    let querySnapshot = await getDocs(q);
+    let account: Account = {
+      uid: '',
+      isChef: false,
+      first: '',
+      last: '',
+      dietaryRestrictions: [],
+      bio: '',
+      profilePicture: '',
+      ratings: { 'Diner': [], 'Chef': [] },
+      username: '',
+      password: '',
+      mealsBooked: []
+    }
+    querySnapshot.forEach((doc) => {
+      account = doc.data() as Account;
+    });
+    return account;
   }
 
-  getAccount(id: number): Observable<Account> {
-    const url = `${this.usersUrl}/${id}`;
-    return this.http.get<Account>(url).pipe(
-      catchError(this.handleError<Account>(`user id=${id}`))
-    );
+  async accountExists(): Promise<boolean> {
+    let docRef = doc(this.accountRef, this.userId);
+    let docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
-  addAccount(account: Account): Observable<Account> {
-
-    return this.http.post<Account>(this.usersUrl, account, this.httpOptions).pipe(
-      catchError(this.handleError<Account>('addAccount'))
-    );
+  userIsChef(): boolean {
+    if (this.account) {
+      return this.account.isChef;
+    }
+    return false;
   }
 
-  updateAccount(accounts: Account): Observable<any> {
-    return this.http.put(this.usersUrl, accounts, this.httpOptions).pipe(
-      catchError(this.handleError<any>('updateAccount'))
-    );
+  getAccount() {
+    return this.account;
   }
 
-  getActiveUser(): Observable<Account> {
-    const url = `${this.usersUrl}/${this.userId}`;
-    return this.http.get<Account>(url).pipe(
-      catchError(this.handleError<Account>(`user id=${this.userId}`))
-    );
+  async createAccount(account: Account) {
+    let docRef = doc(this.accountRef, this.userId);
+    await setDoc(docRef, account);
   }
 
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
+  async updateAccount(account: Account) {
+    let docRef = doc(this.accountRef, this.userId);
+    await updateDoc(docRef, account as any);
+  }
 
-      console.error(error);
+  async deleteAccount() {
+    let docRef = doc(this.accountRef, this.userId);
+    await deleteDoc(docRef);
+    this.fireAuth.currentUser.then(user => user?.delete())
+  }
 
-      return of(result as T);
-    };
+  bookMeal(mealId: string) {
+    if (this.account) {
+      this.account?.mealsBooked.push(mealId);
+      this.updateAccount(this.account);
+    }
+  }
+
+  unbookMeal(mealId: string) {
+    if (this.account) {
+      let mealIndex = this.account.mealsBooked.findIndex(x => x == mealId);
+      this.account.mealsBooked.splice(mealIndex, 1);
+      this.updateAccount(this.account);
+    }
+  }
+
+  hasBookedMeal(mealId: string): boolean {
+    if (this.account?.mealsBooked.includes(mealId)) {
+      return true;
+    }
+    return false;
   }
 
 }

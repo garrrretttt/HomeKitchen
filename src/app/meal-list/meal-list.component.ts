@@ -21,8 +21,7 @@ export class MealListComponent implements OnInit {
     this.getMeals();
   }
 
-  getMeals(){
-    this.mealService.getMeals()
-      .subscribe(meals => this.meals = meals);
+  async getMeals(){
+    this.meals = await this.mealService.getMeals();
   }
 }

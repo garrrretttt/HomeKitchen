@@ -1,21 +1,13 @@
-import { Meal } from "./meal";
-
 export interface Account {
-    id: number
+    uid: string;
     isChef: boolean;
-    name: string;
+    first: string;
+    last: string;
     dietaryRestrictions: string[];
     bio: string;
     profilePicture: string;
     ratings: {'Diner': number[], 'Chef': number[]};
     username: string;
     password: string;
-    mealsBooked: number[]; //stored by id
-    // Name 
-    // Dietary Restrictions 
-    // Bio 
-    // Link to picture 
-    // Ratings 
-    // Username & password 
-    // Other stats 
+    mealsBooked: string[]; //stored by id
 }
