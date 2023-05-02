@@ -76,11 +76,14 @@ export class AccountService {
     return false;
   }
 
-  async getAccount(): Promise<Account> {
-    if(this.account){
+  async getAccount(id?: string): Promise<Account> {
+    if (id) {
+      return await this.getAccountByUid(id);
+    }
+    else if (this.account) {
       return this.account
     }
-    else{
+    else {
       return await this.getAccountByUid(this.getUid())
     }
   }
@@ -91,6 +94,7 @@ export class AccountService {
   }
 
   async updateAccount(account: Account) {
+    this.account = account;
     let docRef = doc(this.accountRef, this.userId);
     await updateDoc(docRef, account as any);
   }

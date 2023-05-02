@@ -1,0 +1,61 @@
+<div *ngIf="account" class="container-fluid">
+    <div class="row m-2">
+        <div class="col">
+            <div class="row">
+                <button *ngIf="user?.uid == account.uid" (click)="onEdit()" mat-button class="float-start"
+                    style="width: 3rem;">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <h1 class="p-0 m-0 float-start">{{account.first}} {{account.last}}</h1>
+            </div>
+            <h6 *ngIf="account.isChef" class="border border-secondary border-1 rounded text-success p-1 text-center"
+                style="width: 3rem;">Cook</h6>
+            <h6 *ngIf="!account.isChef" class="border border-secondary border-1 rounded text-warning p-1 text-center"
+                style="width: 3rem;">Diner</h6>
+        </div>
+    </div>
+    <div class="row m-2">
+        <p>{{account.bio}}</p>
+    </div>
+    <mat-divider></mat-divider>
+    <div *ngIf="user?.uid == account.uid">
+        <mat-tab-group>
+            <mat-tab label="Ratings">
+                <p *ngIf="account.isChef">
+                    As a cook: {{averageRatings(account.ratings['Chef']) | number: '1.1-1'}}
+                    from {{account.ratings['Chef'].length}} ratings
+                </p>
+                <p>
+                    As a diner: {{averageRatings(account.ratings['Diner']) | number: '1.1-1'}}
+                    from {{account.ratings['Diner'].length}} ratings
+                </p>
+            </mat-tab>
+            <mat-tab label="Booked Meals">
+                do we want this?
+            </mat-tab>
+            <mat-tab label="Cooked Meals">
+                do we want this?
+            </mat-tab>
+            <mat-tab label="History">
+                ???
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+    <div *ngIf="user?.uid != account.uid">
+        <mat-tab-group>
+            <mat-tab label="Ratings">
+                <p *ngIf="account.isChef">
+                    As a cook: {{averageRatings(account.ratings['Chef']) | number: '1.1-1'}}
+                    from {{account.ratings['Chef'].length}} ratings
+                </p>
+                <p>
+                    As a diner: {{averageRatings(account.ratings['Diner']) | number: '1.1-1'}}
+                    from {{account.ratings['Diner'].length}} ratings
+                </p>
+            </mat-tab>
+            <mat-tab *ngIf="account.isChef" label="Cooked Meals">
+                do we want this?
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

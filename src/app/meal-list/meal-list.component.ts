@@ -24,7 +24,7 @@ export class MealListComponent implements OnInit {
   }
 
   async getMeals() {
-    let pickMeals: number = 2 // 0 = all meals ; 1 = created meals ; 2 = booked meals ; do whatever you want, I just made it like this to show you how to use the services.
+    let pickMeals: number = 0 // 0 = all meals ; 1 = created meals ; 2 = booked meals ; do whatever you want, I just made it like this to show you how to use the services.
     let meals: Meal[] = [];
     if(pickMeals == 0){
       meals = await this.mealService.getMeals();

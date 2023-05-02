@@ -12,7 +12,7 @@
             <!-- Insert link to chef account page in next line -->
             <p class="card-text">
                 <!-- get chef name -->
-                Chef: <a routerLink="">{{chef.first}} {{chef.last}}</a><br>
+                Chef: <a routerLink="/account/view/{{chef.uid}}">{{chef.first}} {{chef.last}}</a><br>
                 Date: {{meal.startDate | date}}<br>
                 Time: {{meal.startDate | date:"shortTime"}}<br>
                 Duration: {{meal.duration}} <span [textContent]="meal.duration == 1 ? 'hr' : 'hrs'"></span><br>
