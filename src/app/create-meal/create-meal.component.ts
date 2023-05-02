@@ -45,6 +45,7 @@ export class CreateMealComponent {
 
   async createMeal(meal: Meal) {
     let id = await this.mealService.createMeal(meal);
+    this.accountService.createMeal(id);
     this.router.navigate([`/meal/view/${id}`])
   }
 

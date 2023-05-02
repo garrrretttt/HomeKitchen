@@ -66,6 +66,18 @@ export class MealService {
     return meals;
   }
 
+  async getMealsById(mealIds: string[]): Promise<Meal[]> {
+    let meals: Meal[] = [];
+    for(let mealId of mealIds){
+      let q = query(this.mealRef, where('id', '==', mealId));
+      let querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        meals.push(doc.data() as Meal);
+      });
+    }
+    return meals;
+  }
+
   async createMeal(meal: Meal): Promise<string> {
     let docRef = await addDoc(this.mealRef, meal);
     meal.id = docRef.id;
@@ -91,4 +103,5 @@ export class MealService {
     }
     return false;
   }
+
 }

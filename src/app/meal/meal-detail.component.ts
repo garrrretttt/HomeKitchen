@@ -19,6 +19,7 @@ export class MealDetailComponent implements OnInit {
   restriction: string = '';
   tag: string = '';
   isBooked: boolean = false;
+  userIsMealChef = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,11 +32,14 @@ export class MealDetailComponent implements OnInit {
   ngOnInit() {
     this.getMeal().then(async (meal: Meal) => {
       this.meal = meal;
-      this.isBooked = this.accountService.hasBookedMeal(this.meal.id);
-      console.log(this.meal.chefId);
+      if (this.accountService.isMealChef(meal.id)) {
+        this.userIsMealChef = true;
+      }
+      else {
+        this.isBooked = await this.accountService.hasBookedMeal(meal.id);
+      }
       this.accountService.getAccountByUid(this.meal.chefId).then((chef: Account) => {
         this.chef = chef;
-        console.log(chef);
       })
     });
   }
@@ -53,12 +57,14 @@ export class MealDetailComponent implements OnInit {
   bookMeal() {
     if (this.meal) {
       this.accountService.bookMeal(this.meal.id);
+      this.isBooked = true;
     }
   }
 
   unbookMeal() {
     if (this.meal) {
       this.accountService.unbookMeal(this.meal.id);
+      this.isBooked = false;
     }
   }
 
@@ -68,4 +74,5 @@ export class MealDetailComponent implements OnInit {
       this.router.navigate(['/meal/view', this.meal.id]);
     }
   }
+
 }

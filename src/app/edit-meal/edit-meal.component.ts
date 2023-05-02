@@ -3,6 +3,7 @@ import { Meal } from '../meal';
 import { MealService } from '../meal.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { AccountService } from '../account.service';
 
 @Component({
   selector: 'edit-meal',
@@ -18,17 +19,23 @@ export class EditMealComponent {
   constructor(
     private route: ActivatedRoute,
     private mealService: MealService,
+    private accountService: AccountService,
     private location: Location,
     private router: Router,
   ) { }
 
   ngOnInit() {
-    this.getMeal();
+    this.getMeal().then((meal: Meal) =>{
+      this.meal = meal;
+      if(!this.accountService.isMealChef(meal.id)){
+        this.router.navigate(['/meal/view', meal.id]);
+      }
+    });
   }
 
-  async getMeal(): Promise<void> {
+  async getMeal(): Promise<Meal> {
     const id = String(this.route.snapshot.paramMap.get('id'));
-    this.meal = await this.mealService.getMeal(id);
+    return this.mealService.getMeal(id);
   }
 
   goBack(): void {
@@ -57,6 +64,7 @@ export class EditMealComponent {
   deleteMeal() {
     if (this.meal) {
       this.mealService.deleteMeal(this.meal.id);
+      this.accountService.deleteMeal(this.meal.id);
       this.router.navigate(['/meal/list']);
     }
   }
