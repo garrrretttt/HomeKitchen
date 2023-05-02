@@ -1,21 +1,49 @@
-<nav class="navbar navbar-expand bg-secondary mb-3">
+<!-- <nav class="navbar navbar-expand bg-secondary mb-3">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/">HomeKitchen</a>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" routerLinkActive="active" routerLink="/home">Home</a>
-        <a class="nav-link" routerLinkActive="active" routerLink="/meal/view/0">Meal</a>
+        <a class="nav-link" routerLinkActive="active" routerLink="/account/view">Account</a>
         <a class="nav-link" routerLinkActive="active" routerLink="/meal/list">Meal List</a>
         <a class="nav-link" routerLinkActive="active" routerLink="/meal/create" *ngIf="accountService.userIsChef()">Create Meal</a>
         <a class="nav-link" routerLinkActive="active" (click)="fireAuth.signOut();" *ngIf="fireAuth.user">Log Out</a>
       </div>
     </div>
   </div>
-</nav>
-<div *ngIf="fireAuth.user | async as user; else showLogin">
-  <router-outlet></router-outlet>
-</div>
-<ng-template #showLogin>
-  <firebase-ui (signInSuccessWithAuthResult)="successLoginCallback($event)"
-    (signInFailure)="errorLoginCallback($event)"></firebase-ui>
-</ng-template>
+</nav> -->
+<mat-drawer-container class="h-100" autosize>
+  <mat-drawer #drawer mode="side" disableClose="true" opened="true">
+    <button mat-mini-fab (click)="isExpanded = !isExpanded" color="warn" style="margin: 10px;">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <mat-nav-list>
+      <mat-list-item routerLink="/account/view" style="display: inline-flex; vertical-align: middle;">
+        <mat-icon mat-list-icon style="display: inline-flex; vertical-align: top;">person</mat-icon>
+        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex;">&nbsp;Account</h4>
+      </mat-list-item>
+      <mat-list-item routerLink="/meal/list">
+        <mat-icon mat-list-icon style="display: inline-flex; vertical-align: top;">fastfood</mat-icon>
+        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex;">&nbsp;Meal List</h4>
+      </mat-list-item>
+      <mat-list-item routerLink="/meal/create" *ngIf="accountService.userIsChef()">
+        <mat-icon mat-list-icon style="display: inline-flex; vertical-align: top;">create</mat-icon>
+        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex;">&nbsp;Create Meal</h4>
+      </mat-list-item>
+      <mat-list-item (click)="fireAuth.signOut();" *ngIf="fireAuth.user">
+        <mat-icon mat-list-icon style="display: inline-flex; vertical-align: top;">exit_to_app</mat-icon>
+        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex;">&nbsp;Log Out</h4>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-drawer>
+
+  <div>
+    <div *ngIf="fireAuth.user | async as user; else showLogin">
+      <router-outlet></router-outlet>
+    </div>
+    <ng-template #showLogin>
+      <firebase-ui (signInSuccessWithAuthResult)="successLoginCallback($event)"
+        (signInFailure)="errorLoginCallback($event)"></firebase-ui>
+    </ng-template>
+  </div>
+</mat-drawer-container>

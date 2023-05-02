@@ -11,7 +11,8 @@ import { Firestore } from '@angular/fire/firestore';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'HomeKitchen';
+
+  isExpanded = true;
 
   fireStore: Firestore = inject(Firestore);
   fireAuth: AngularFireAuth = inject(AngularFireAuth);

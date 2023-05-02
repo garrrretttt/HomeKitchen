@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AccountService } from '../account.service';
 import { Router } from '@angular/router';
 import { Account } from '../account';
+import {FormBuilder, Validators} from '@angular/forms';
 
 @Component({
   selector: 'create-account',
@@ -12,9 +13,20 @@ export class CreateAccountComponent {
 
   userId?: string;
 
+  firstFormGroup = this.formBuilder.group({
+    firstCtrl: ['', Validators.required],
+  });
+  secondFormGroup = this.formBuilder.group({
+    secondCtrl: ['', Validators.required],
+  });
+  thirdFormGroup = this.formBuilder.group({
+    thirdCtrl: ['', Validators.required],
+  });
+
   constructor(
     private accountService: AccountService,
     private router: Router,
+    private formBuilder: FormBuilder,
   ) { }
 
   ngOnInit() {
@@ -41,7 +53,7 @@ export class CreateAccountComponent {
 
   onSubmit() {
     if (this.userId) {
-      this.account['uid'] = this.userId;
+      this.account.uid = this.userId;
       this.accountService.createAccount(this.account);
       this.router.navigate(['/home']);
     }
