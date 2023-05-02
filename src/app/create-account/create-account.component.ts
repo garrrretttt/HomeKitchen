@@ -35,7 +35,8 @@ export class CreateAccountComponent {
     },
     username: '',
     password: '',
-    mealsBooked: []
+    mealsBooked: [],
+    mealsCreated: []
   }
 
   onSubmit() {
