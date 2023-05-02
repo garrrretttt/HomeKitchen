@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { Meal } from '../meal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MealService } from '../meal.service';
 import { AccountService } from '../account.service';
 import { Location } from '@angular/common';
+import { Meal } from '../meal';
 
 @Component({
   selector: 'meal-card',
@@ -12,9 +12,7 @@ import { Location } from '@angular/common';
 })
 export class MealCardComponent {
 
-  @Input() id?: number;
-  @Input() manage: boolean = false;
-  selected: boolean = false;
+  @Input() id?: string;
   meal?: Meal;
 
   constructor(
@@ -25,28 +23,19 @@ export class MealCardComponent {
     private router: Router,
   ) { }
 
-  ngOnInit(): void {
-    this.getMeal();
-  }
-
-  cardClick(id: number): void {
-    if (!this.manage) {
-      this.router.navigate([`/meal/view/${id}`])
-    }
-    else {
-      this.toggleSelected();
+  async ngOnInit(): Promise<void> {
+    if (this.id) {
+      this.meal = await this.getMeal(this.id);
     }
   }
 
-  toggleSelected(){
-    this.selected = !this.selected;
+  cardClick(id: string): void {
+    this.router.navigate([`/meal/view/${id}`])
   }
 
-  getMeal(): void {
-    if (typeof this.id != 'undefined') {
-      this.mealService.getMeal(this.id)
-        .subscribe(meal => this.meal = meal);
-    }
+  async getMeal(id: string): Promise<Meal> {
+    let meal = await this.mealService.getMeal(id);
+    return meal;
   }
 
 }

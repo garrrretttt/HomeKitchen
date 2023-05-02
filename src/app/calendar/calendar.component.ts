@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Account } from '../account';
 import { Meal } from '../meal';
 import { MealService } from '../meal.service';
+import { AccountService } from '../account.service';
 
 @Component({
   selector: 'calendar',
@@ -9,19 +10,6 @@ import { MealService } from '../meal.service';
   styleUrls: ['./calendar.component.css'],
 })
 export class CalendarComponent implements OnInit {
-  account: Account = {
-    id: 1,
-    isChef: false,
-    name: 'Alan Turing',
-    dietaryRestrictions: ['None'],
-    bio: 'I like to eat',
-    profilePicture: '',
-    mealsBooked: [],
-    mealsCreated: [],
-    ratings: { Diner: [5, 3, 3], Chef: [] },
-    username: 'Alan',
-    password: 'Turing',
-  };
 
   created: Meal[] = [];
   booked: Meal[] = [];
@@ -29,23 +17,23 @@ export class CalendarComponent implements OnInit {
   bookedHistory: Meal[] = [];
   done: boolean = false;
 
-  constructor(private mealService: MealService) {}
+  constructor(private mealService: MealService, private accountService: AccountService) {}
 
   ngOnInit(): void {
     this.getMeals();
   }
 
   getMeals() {
-    this.mealService.getMeals().subscribe((meals) => {
+    this.mealService.getMeals().then((meals) => {
       console.log('Retrieving meals for calendar page...');
       for (const meal of meals) {
-        if (meal.chefId == this.account?.id) {
+        if (meal.chefId == this.accountService.getUid()) {
           if (meal.startDate >= new Date()) {
             this.created?.push(meal);
           } else {
             this.createdHistory?.push(meal);
           }
-        } else if (meal.accountsBooked.includes(this.account.id)) {
+        } else if (meal.accountsBooked.includes(this.accountService.getUid())) {
           if (new Date(meal.startDate) >= new Date()) {
             this.booked?.push(meal);
           } else {

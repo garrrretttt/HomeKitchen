@@ -1,77 +1,121 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { LoginComponent } from './login/login.component';
+import { Injectable, inject } from '@angular/core';
 import { Account } from './account';
-import { catchError, map, tap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { Firestore } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
 
-  userId?: number;
+  userId?: string;
+  account?: Account;
+  fireStore: Firestore = inject(Firestore);
+  fireAuth: AngularFireAuth = inject(AngularFireAuth);
 
-  constructor(private http: HttpClient) { }
+  accountRef = collection(this.fireStore, 'accounts');
 
-  signupObj: any = {
-    userName: ' ',
-    email: ' ',
-    password: ' '
-  };
-  loginObj: any = {
-    userName: ' ',
-    password: ' '
-  };
-
-  private usersUrl = 'api/accounts';
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+  constructor() {
+    this.fireAuth.onAuthStateChanged(async user => {
+      if (user) {
+        this.userId = user.uid;
+        this.account = await this.getAccountByUid(this.userId)
+      }
+      else {
+        this.account = undefined;
+      }
     })
-  };
-
-  getAccounts(): Observable<Account[]> {
-
-    return this.http.get<Account[]>(this.usersUrl)
-      .pipe(
-        catchError(this.handleError<Account[]>('getUsers', []))
-      );
-
   }
 
-  getAccount(id: number): Observable<Account> {
-    const url = `${this.usersUrl}/${id}`;
-    return this.http.get<Account>(url).pipe(
-      catchError(this.handleError<Account>(`user id=${id}`))
-    );
+  getUid() {
+    if (this.userId) {
+      return this.userId;
+    }
+    return '';
   }
 
-  addAccount(account: Account): Observable<Account> {
-    return this.http.post<Account>(this.usersUrl, account, this.httpOptions).pipe(
-      catchError(this.handleError<Account>('addAccount'))
-    );
+  async getAccountByUid(userId: string): Promise<Account> {
+    let q = query(this.accountRef, where('uid', '==', userId));
+    let querySnapshot = await getDocs(q);
+    let account: Account = {
+      uid: '',
+      isChef: false,
+      first: '',
+      last: '',
+      dietaryRestrictions: [],
+      bio: '',
+      profilePicture: '',
+      ratings: { 'Diner': [], 'Chef': [] },
+      username: '',
+      password: '',
+      mealsCreated: [],
+      mealsBooked: []
+    }
+    querySnapshot.forEach((doc) => {
+      account = doc.data() as Account;
+    });
+    return account;
   }
 
-  updateAccount(accounts: Account): Observable<any> {
-    return this.http.put(this.usersUrl, accounts, this.httpOptions).pipe(
-      catchError(this.handleError<any>('updateAccount'))
-    );
+  async accountExists(): Promise<boolean> {
+    let docRef = doc(this.accountRef, this.userId);
+    let docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
-  setActiveUser(id: number) {
-
-    this.userId = id;
-
+  userIsChef(): boolean {
+    if (this.account) {
+      return this.account.isChef;
+    }
+    return false;
   }
 
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
+  getAccount() {
+    return this.account;
+  }
 
-      console.error(error);
+  async createAccount(account: Account) {
+    let docRef = doc(this.accountRef, this.userId);
+    await setDoc(docRef, account);
+  }
 
-      return of(result as T);
-    };
+  async updateAccount(account: Account) {
+    let docRef = doc(this.accountRef, this.userId);
+    await updateDoc(docRef, account as any);
+  }
+
+  async deleteAccount() {
+    let docRef = doc(this.accountRef, this.userId);
+    await deleteDoc(docRef);
+    this.fireAuth.currentUser.then(user => user?.delete())
+  }
+
+  bookMeal(mealId: string) {
+    if (this.account) {
+      this.account?.mealsBooked.push(mealId);
+      this.updateAccount(this.account);
+    }
+  }
+
+  unbookMeal(mealId: string) {
+    if (this.account) {
+      let mealIndex = this.account.mealsBooked.findIndex(x => x == mealId);
+      this.account.mealsBooked.splice(mealIndex, 1);
+      this.updateAccount(this.account);
+    }
+  }
+
+  hasBookedMeal(mealId: string): boolean {
+    if (this.account?.mealsBooked.includes(mealId)) {
+      return true;
+    }
+    return false;
   }
 
 }

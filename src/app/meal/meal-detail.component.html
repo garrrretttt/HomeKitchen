@@ -1,4 +1,4 @@
-<div *ngIf="meal && details" class="container-fluid">
+<div *ngIf="meal && chef" class="container-fluid">
     <div class="card border border-2 m-3" style="width: 23rem;">
         <img src="{{meal.picture}}" class="card-img-top align-self-center rounded m-3 mb-0 border border-2"
             style="height: 20rem; width: 20rem;">
@@ -12,7 +12,7 @@
             <!-- Insert link to chef account page in next line -->
             <p class="card-text">
                 <!-- get chef name -->
-                Chef: <a routerLink="">Chef Name</a><br>
+                Chef: <a routerLink="">{{chef.first}} {{chef.last}}</a><br>
                 Date: {{meal.startDate | date}}<br>
                 Time: {{meal.startDate | date:"shortTime"}}<br>
                 Duration: {{meal.duration}} <span [textContent]="meal.duration == 1 ? 'hr' : 'hrs'"></span><br>
@@ -42,25 +42,15 @@
                     <button (click)="goBack()" class="btn btn-danger float-left">Back</button>
                 </div>
                 <div class="col-6">
-                    <button *ngIf="!isChef && !isBooked" (click)="bookMeal()"
+                    <button *ngIf="!accountService.userIsChef() && !isBooked" (click)="bookMeal()"
                         [disabled]="meal.partySize-meal.accountsBooked.length == 0"
                         class="btn btn-outline-primary float-end">Book</button>
-                    <button *ngIf="!isChef && isBooked" (click)="unbookMeal()"
+                    <button *ngIf="!accountService.userIsChef()  && isBooked" (click)="unbookMeal()"
                         class="btn btn-outline-secondary float-end">Unbook</button>
-                    <a *ngIf="isChef" routerLink="/meal/edit/{{meal.id}}"
+                    <a *ngIf="accountService.userIsChef() " routerLink="/meal/edit/{{meal.id}}"
                         class="btn btn-outline-warning float-end">Edit</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<ng-container *ngIf="details; then manageBlock else listBlock"></ng-container>
-
-<ng-template #manageBlock>
-    
-</ng-template>
-
-<ng-template #listBlock>
-    
-</ng-template>

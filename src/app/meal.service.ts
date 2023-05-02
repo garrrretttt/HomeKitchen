@@ -1,69 +1,94 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Meal } from 'src/app/meal';
-import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, tap } from 'rxjs/operators';
+import { Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MealService {
 
-  constructor(private http: HttpClient) { }
+  fireStore: Firestore = inject(Firestore);
+  fireAuth: AngularFireAuth = inject(AngularFireAuth);
 
-  private mealsUrl = 'api/meals';
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+  mealRef = collection(this.fireStore, 'meals');
 
-  getMeals(): Observable<Meal[]> {
-    return this.http.get<Meal[]>(this.mealsUrl)
-      .pipe(
-        catchError(this.handleError<Meal[]>('getMeals', []))
-      );
+  constructor() { }
+
+  async getMeal(mealId: string): Promise<Meal> {
+    let q = query(this.mealRef, where('id', '==', mealId));
+    let querySnapshot = await getDocs(q);
+    let meal: Meal = {
+      id: '',
+      dishName: '',
+      partySize: 0,
+      tags: [],
+      dietaryRestrictions: [],
+      cost: 0,
+      location: '',
+      startDate: new Date(),
+      duration: 0,
+      picture: '',
+      chefId: '',
+      ratings: [],
+      accountsBooked: []
+    };
+    querySnapshot.forEach((doc) => {
+      meal = doc.data() as Meal;
+    });
+    return meal;
   }
 
-  getMeal(id: number): Observable<Meal> {
-    const url = `${this.mealsUrl}/${id}`;
-    return this.http.get<Meal>(url).pipe(
-      catchError(this.handleError<Meal>(`getMeal id=${id}`))
-    );
+  async getMeals(): Promise<Meal[]> {
+    let querySnapshot = await getDocs(this.mealRef);
+    let meals: Meal[] = [];
+    querySnapshot.forEach((doc) => {
+      meals.push(doc.data() as Meal);
+    });
+    if (meals.length == 0) {
+      meals.push({
+        id: '',
+        dishName: '',
+        partySize: 0,
+        tags: [],
+        dietaryRestrictions: [],
+        cost: 0,
+        location: '',
+        startDate: new Date(),
+        duration: 0,
+        picture: '',
+        chefId: '',
+        ratings: [],
+        accountsBooked: []
+      });
+    }
+    return meals;
+  }
+
+  async createMeal(meal: Meal): Promise<string> {
+    let docRef = await addDoc(this.mealRef, meal);
+    meal.id = docRef.id;
+    await setDoc(docRef, meal);
+    return docRef.id;
+  }
+
+  async updateMeal(mealId: string, meal: Meal) {
+    let docRef = doc(this.mealRef, mealId);
+    await updateDoc(docRef, meal as any);
+  }
+
+  async deleteMeal(mealId: string) {
+    let docRef = doc(this.mealRef, mealId);
+    await deleteDoc(docRef);
   }
 
   isValidMeal(meal: Meal): boolean {
-      if (meal?.dishName != '' && meal.cost != 0 && meal.partySize != 0
-        && new Date(meal.startDate) >= new Date()
-        && meal.duration != 0 && meal.location != '') {
-        return true;
+    if (meal.dishName != '' && meal.cost != 0 && meal.partySize != 0
+      && new Date(meal.startDate) >= new Date()
+      && meal.duration != 0 && meal.location != '') {
+      return true;
     }
     return false;
-  }
-
-  addMeal(meal: Meal): Observable<Meal> {
-    return this.http.post<Meal>(this.mealsUrl, meal, this.httpOptions).pipe(
-      catchError(this.handleError<Meal>('addMeal'))
-    );
-  }
-
-  updateMeal(meal: Meal): Observable<any> {
-    return this.http.put(this.mealsUrl, meal, this.httpOptions).pipe(
-      catchError(this.handleError<any>('updateMeal'))
-    );
-  }
-
-  deleteMeal(id: number): Observable<Meal> {
-    const url = `${this.mealsUrl}/${id}`;
-    return this.http.delete<Meal>(url, this.httpOptions).pipe(
-      catchError(this.handleError<Meal>('deleteMeal'))
-    );
-  }
-
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      console.error(error);
-
-      return of(result as T);
-    };
   }
 }

@@ -8,8 +8,3 @@
     transform: scale(1.05);
     box-shadow: 5px 5px 5px gray
 }
-
-.selected{
-    transform: scale(1.05);
-    box-shadow: 5px 5px 5px red;
-}

@@ -10,7 +10,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./meal-list.component.css'],
 })
 export class MealListComponent implements OnInit {
-  @Input() meals: Meal[] | undefined;
+  @Input() meals?: Meal[];
 
   constructor(
     private route: ActivatedRoute,
@@ -23,8 +23,5 @@ export class MealListComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.meals);
-    if (this.meals) {
-      console.log('true');
-    }
   }
 }
