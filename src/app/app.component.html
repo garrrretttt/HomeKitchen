@@ -1,16 +1,3 @@
-<!-- <nav class="navbar navbar-expand bg-secondary mb-3">
-  <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/">HomeKitchen</a>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" routerLinkActive="active" routerLink="/account/view">Account</a>
-        <a class="nav-link" routerLinkActive="active" routerLink="/meal/list">Meal List</a>
-        <a class="nav-link" routerLinkActive="active" routerLink="/meal/create" *ngIf="accountService.userIsChef()">Create Meal</a>
-        <a class="nav-link" routerLinkActive="active" (click)="fireAuth.signOut();" *ngIf="fireAuth.user">Log Out</a>
-      </div>
-    </div>
-  </div>
-</nav> -->
 <mat-drawer-container class="h-100" autosize>
   <mat-drawer #drawer mode="side" disableClose="true" opened="true">
     <button mat-mini-fab (click)="isExpanded = !isExpanded" color="warn" style="margin: 10px;">
@@ -37,13 +24,13 @@
     </mat-nav-list>
   </mat-drawer>
 
-  <div>
+  <div class="h-100 pt-3">
     <div *ngIf="fireAuth.user | async as user; else showLogin">
       <router-outlet></router-outlet>
     </div>
     <ng-template #showLogin>
       <firebase-ui (signInSuccessWithAuthResult)="successLoginCallback($event)"
-        (signInFailure)="errorLoginCallback($event)"></firebase-ui>
+        (signInFailure)="errorLoginCallback($event)" ></firebase-ui>
     </ng-template>
   </div>
 </mat-drawer-container>
