@@ -10,7 +10,7 @@ import { Account } from '../account';
 @Component({
   selector: 'meal-detail',
   templateUrl: './meal-detail.component.html',
-  styleUrls: ['./meal-detail.component.css']
+  styleUrls: ['./meal-detail.component.css'],
 })
 export class MealDetailComponent implements OnInit {
   @Input() id?: string;
@@ -26,8 +26,8 @@ export class MealDetailComponent implements OnInit {
     private mealService: MealService,
     public accountService: AccountService,
     private location: Location,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.getMeal().then(async (meal: Meal) => {

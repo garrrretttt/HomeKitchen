@@ -14,7 +14,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
-import {MatTabsModule} from '@angular/material/tabs';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 
@@ -25,12 +24,14 @@ import { MealListComponent } from './meal-list/meal-list.component';
 import { EditMealComponent } from './edit-meal/edit-meal.component';
 import { CreateMealComponent } from './create-meal/create-meal.component';
 import { MealCardComponent } from './meal-card/meal-card.component';
+import { MatTabsModule } from '@angular/material/tabs';
 import { provideFirebaseApp } from '@angular/fire/app';
 import { initializeApp } from 'firebase/app';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { AccountComponent } from './account/account.component';
 import { EditAccountComponent } from './edit-account/edit-account.component';
+import { CalendarComponent } from './calendar/calendar.component';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -52,7 +53,8 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     MealCardComponent,
     CreateAccountComponent,
     AccountComponent,
-    EditAccountComponent
+    EditAccountComponent,
+    CalendarComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,8 +78,9 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     MatSidenavModule,
     MatListModule,
     BrowserAnimationsModule,
+    MatTabsModule,
   ],
   providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebase }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
