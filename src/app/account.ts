@@ -11,5 +11,4 @@ export interface Account {
     password: string;
     mealsCreated: string[]; // stored by id
     mealsBooked: string[]; //stored by id
-    mealsCreated: string[];
 }
