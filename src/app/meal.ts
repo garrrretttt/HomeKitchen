@@ -11,5 +11,5 @@ export interface Meal {
     picture: string;
     chefId: string;
     ratings: number[];
-    accountsBooked: number[]; //stored by id
+    accountsBooked: string[]; //stored by id
 }
