@@ -53,7 +53,7 @@ export class EditMealComponent {
   updateMeal() {
     if (this.meal) {
       this.mealService.updateMeal(this.meal.id, this.meal);
-      this.router.navigate(['/meal/view', this.meal.id]);
+      this.goBack();
     }
   }
 

@@ -46,9 +46,7 @@ export class AccountService {
       dietaryRestrictions: [],
       bio: '',
       profilePicture: '',
-      ratings: { 'Diner': [], 'Chef': [] },
-      username: '',
-      password: '',
+      ratings: [],
       mealsBooked: [],
       mealsCreated: []
     }

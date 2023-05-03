@@ -32,6 +32,9 @@ import { CreateAccountComponent } from './create-account/create-account.componen
 import { AccountComponent } from './account/account.component';
 import { EditAccountComponent } from './edit-account/edit-account.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { ExploreComponent } from './explore/explore.component';
+import { CreateRatingComponent } from './create-rating/create-rating.component';
+import { RatingComponent } from './rating/rating.component';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -55,6 +58,9 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     AccountComponent,
     EditAccountComponent,
     CalendarComponent,
+    ExploreComponent,
+    CreateRatingComponent,
+    RatingComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,17 @@
+<div *ngIf="rateAccount" class="ms-2">
+    <h4>Rating for {{rateAccount.first}} {{rateAccount.last}}</h4>
+    <form (ngSubmit)="onSubmit()">
+        <div class="rating">
+            <input [(ngModel)]="rating" type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+            <input [(ngModel)]="rating" type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+            <input [(ngModel)]="rating" type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+            <input [(ngModel)]="rating" type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+            <input [(ngModel)]="rating" type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+        </div>
+        <mat-form-field appearance="outline" class="m-2 w-50">
+            <mat-label>Review</mat-label>
+            <textarea matInput [(ngModel)]="review" name="review"></textarea>
+        </mat-form-field><br>
+        <button mat-raised-button color="primary" type="submit" class="ms-2">Submit</button>
+    </form>
+</div>

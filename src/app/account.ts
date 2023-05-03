@@ -6,9 +6,7 @@ export interface Account {
     dietaryRestrictions: string[];
     bio: string;
     profilePicture: string;
-    ratings: {'Diner': number[], 'Chef': number[]};
-    username: string;
-    password: string;
+    ratings: string[]; // stored by id
     mealsCreated: string[]; // stored by id
     mealsBooked: string[]; //stored by id
 }

@@ -41,12 +41,7 @@ export class CreateAccountComponent {
     bio: '',
     dietaryRestrictions: [],
     profilePicture: '',
-    ratings: {
-      Diner: [],
-      Chef: []
-    },
-    username: '',
-    password: '',
+    ratings: [],
     mealsBooked: [],
     mealsCreated: []
   }

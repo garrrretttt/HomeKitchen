@@ -20,6 +20,7 @@ export class MealDetailComponent implements OnInit {
   tag: string = '';
   isBooked: boolean = false;
   userIsMealChef = false;
+  isHistory = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,27 +28,30 @@ export class MealDetailComponent implements OnInit {
     public accountService: AccountService,
     private location: Location,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.getMeal().then(async (meal: Meal) => {
-      this.meal = meal;
-      if (this.accountService.isMealChef(meal.id)) {
-        this.userIsMealChef = true;
-      }
-      else {
-        this.isBooked = await this.accountService.hasBookedMeal(meal.id);
-      }
-      this.accountService.getAccountByUid(this.meal.chefId).then((chef: Account) => {
-        this.chef = chef;
-      })
-    });
+    if (this.id) {
+      this.getMeal(this.id).then(async (meal: Meal) => {
+        this.meal = meal;
+        if (this.accountService.isMealChef(meal.id)) {
+          this.userIsMealChef = true;
+        }
+        else {
+          this.isBooked = await this.accountService.hasBookedMeal(meal.id);
+        }
+        this.accountService.getAccountByUid(this.meal.chefId).then((chef: Account) => {
+          this.chef = chef;
+        })
+        if(new Date(meal.startDate) < new Date()){
+          this.isHistory = true
+        }
+      });
+    }
   }
 
-  async getMeal(): Promise<Meal> {
-    const id = String(this.route.snapshot.paramMap.get('id'));
-    let meal = await this.mealService.getMeal(id);
-    return meal
+  async getMeal(id: string): Promise<Meal> {
+    return await this.mealService.getMeal(id);
   }
 
   goBack(): void {
@@ -57,6 +61,7 @@ export class MealDetailComponent implements OnInit {
   bookMeal() {
     if (this.meal) {
       this.accountService.bookMeal(this.meal.id);
+      this.mealService.bookMeal(this.meal, this.accountService.getUid())
       this.isBooked = true;
     }
   }
@@ -64,6 +69,7 @@ export class MealDetailComponent implements OnInit {
   unbookMeal() {
     if (this.meal) {
       this.accountService.unbookMeal(this.meal.id);
+      this.mealService.unbookMeal(this.meal, this.accountService.getUid())
       this.isBooked = false;
     }
   }

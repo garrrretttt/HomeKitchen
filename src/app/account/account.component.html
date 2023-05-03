@@ -28,37 +28,12 @@
     <div>
         <mat-tab-group>
             <mat-tab label="Ratings">
-                <div class="row m-0 p-0">
-                    <div *ngIf="account.isChef" class="col-6">
-                        <p>
-                            As a cook: {{averageRatings(account.ratings['Chef']) | number: '1.1-1'}}
-                            from {{account.ratings['Chef'].length}} ratings
-                        </p>
-                        <div class="rating">
-
-                            <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
-                            <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
-                            <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-                            <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-                            <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
-                          </div>
-                    </div>
-                    <div class="col-6">
-                        <p>
-                            As a diner: {{averageRatings(account.ratings['Diner']) | number: '1.1-1'}}
-                            from {{account.ratings['Diner'].length}} ratings
-                        </p>
-                    </div>
-                </div>
             </mat-tab>
-            <mat-tab *ngIf="user?.uid == account.uid" label="Booked Meals">
-                do we want this?
+            <mat-tab label="Created History">
+                <meal-list *ngIf="done" [meals]="createdHistory"></meal-list>
             </mat-tab>
-            <mat-tab label="Cooked Meals">
-                do we want this?
-            </mat-tab>
-            <mat-tab *ngIf="user?.uid == account.uid" label="History">
-                ???
+            <mat-tab *ngIf="user?.uid == account.uid" label="Booked History">
+                <meal-list *ngIf="done" [meals]="bookedHistory"></meal-list>
             </mat-tab>
         </mat-tab-group>
     </div>

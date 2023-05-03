@@ -5,13 +5,17 @@
     </button>
 
     <mat-nav-list>
-      <mat-list-item routerLink="/account/view" style="display: inline-flex; vertical-align: middle;">
+      <mat-list-item routerLink="/account/view">
         <mat-icon mat-list-icon style="display: inline-flex; vertical-align: top;">person</mat-icon>
         <h4 mat-line *ngIf="isExpanded" style="display: inline-flex;">&nbsp;Account</h4>
       </mat-list-item>
-      <mat-list-item routerLink="/meal/list">
+      <mat-list-item routerLink="/calendar">
+        <mat-icon mat-list-icon style="display: inline-flex; vertical-align: top;">calendar_today</mat-icon>
+        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex;">&nbsp;Calendar</h4>
+      </mat-list-item>
+      <mat-list-item routerLink="/explore">
         <mat-icon mat-list-icon style="display: inline-flex; vertical-align: top;">fastfood</mat-icon>
-        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex;">&nbsp;Meal List</h4>
+        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex;">&nbsp;Explore</h4>
       </mat-list-item>
       <mat-list-item routerLink="/meal/create" *ngIf="accountService.userIsChef()">
         <mat-icon mat-list-icon style="display: inline-flex; vertical-align: top;">create</mat-icon>
@@ -24,7 +28,7 @@
     </mat-nav-list>
   </mat-drawer>
 
-  <div class="h-100 pt-3">
+  <div class="pt-3">
     <div *ngIf="fireAuth.user | async as user; else showLogin">
       <router-outlet></router-outlet>
     </div>
