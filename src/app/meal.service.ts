@@ -78,6 +78,18 @@ export class MealService {
     return meals;
   }
 
+  async getPastMeals(mealIds: string[]){
+    let meals: Meal[] = [];
+    for(let mealId of mealIds){
+      let q = query(this.mealRef, where('id', '==', mealId), where('startData', '<', new Date()));
+      let querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        meals.push(doc.data() as Meal);
+      });
+    }
+    return meals;
+  }
+
   async createMeal(meal: Meal): Promise<string> {
     let docRef = await addDoc(this.mealRef, meal);
     meal.id = docRef.id;
@@ -102,6 +114,10 @@ export class MealService {
       return true;
     }
     return false;
+  }
+
+  bookMeal(meal: Meal, uid: string){
+    meal.accountsBooked.push(uid);
   }
 
 }

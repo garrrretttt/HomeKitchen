@@ -24,13 +24,13 @@
     </mat-nav-list>
   </mat-drawer>
 
-  <div>
+  <div class="h-100 pt-3">
     <div *ngIf="fireAuth.user | async as user; else showLogin">
       <router-outlet></router-outlet>
     </div>
     <ng-template #showLogin>
       <firebase-ui (signInSuccessWithAuthResult)="successLoginCallback($event)"
-        (signInFailure)="errorLoginCallback($event)"></firebase-ui>
+        (signInFailure)="errorLoginCallback($event)" ></firebase-ui>
     </ng-template>
   </div>
 </mat-drawer-container>

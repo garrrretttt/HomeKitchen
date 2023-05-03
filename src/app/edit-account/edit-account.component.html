@@ -1,29 +1,29 @@
 <div *ngIf="account" class="container-fluid">
     <form (ngSubmit)="onSave()">
-        <div class="row m-2">
-            <div class="col">
-                <div class="row">
-                    <button type="submit" mat-button class="float-start" style="width: 3rem;">
-                        <mat-icon>save</mat-icon>
-                    </button>
-                </div>
-                <div class="row">
-                    <mat-form-field appearance="outline" class="m-2" style="width: 40%">
-                        <mat-label>First Name</mat-label>
-                        <input required matInput placeholder="John" [(ngModel)]="account.first" name="first">
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="m-2" style="width: 40%">
-                        <mat-label>Last Name</mat-label>
-                        <input required matInput placeholder="Smith" [(ngModel)]="account.last" name="last">
-                    </mat-form-field>
-                </div>
+        <div class="row m-0 p-0">
+            <div class="col-6">
+                <mat-form-field appearance="outline" class="m-2" style="width: 40%">
+                    <mat-label>First Name</mat-label>
+                    <input required matInput placeholder="John" [(ngModel)]="account.first" name="first">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="m-2" style="width: 40%">
+                    <mat-label>Last Name</mat-label>
+                    <input required matInput placeholder="Smith" [(ngModel)]="account.last" name="last">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="m-2" style="width: 90%">
+                    <mat-label>Bio / Description</mat-label>
+                    <textarea required matInput [(ngModel)]="account.bio" name="bio"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-6">
+                <button type="submit" mat-button class="float-end" style="width: 3rem;">
+                    <mat-icon style="font-size: 40px; height: 40px; width: 40px;">save</mat-icon>
+                </button>
+                
             </div>
         </div>
         <div class="row m-2">
-            <mat-form-field appearance="outline" class="m-2" style="width: 90%">
-                <mat-label>Bio / Description</mat-label>
-                <textarea required matInput [(ngModel)]="account.bio" name="bio"></textarea>
-            </mat-form-field>
+            
         </div>
     </form>
     <mat-divider></mat-divider>

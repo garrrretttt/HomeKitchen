@@ -1,6 +1,6 @@
 <div *ngIf="meal" class="container-fluid">
     <form (keydown.enter)="$event.preventDefault()" (ngSubmit)="onSave()">
-        <div class="card border border-2 m-3" style="width: 23rem;">
+        <div class="card border border-2 m-3 mt-0" style="width: 23rem;">
             <img src="{{meal.picture}}" class="card-img-top align-self-center rounded m-3 mb-0 border border-2"
                 style="height: 20rem; width: 20rem;">
             <div class="card-body m-0">
