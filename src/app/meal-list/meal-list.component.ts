@@ -33,9 +33,12 @@ export class MealListComponent implements OnInit {
       let mealIds: string[] = await this.accountService.getCreatedMeals();
       meals = await this.mealService.getMealsById(mealIds);
     }
-    else {
+    else if(pickMeals == 2) {
     let mealIds: string[] = await this.accountService.getBookedMeals();
     meals = await this.mealService.getMealsById(mealIds);
+    }
+    else if(pickMeals == 3){
+      
     }
     this.meals = meals;
   }
