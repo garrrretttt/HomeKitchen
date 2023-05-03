@@ -38,17 +38,16 @@
             </div>
             <hr>
             <div class="row">
-                <div class="col-6">
-                    <button (click)="goBack()" class="btn btn-danger float-left">Back</button>
-                </div>
-                <div class="col-6">
-                    <button *ngIf="!userIsMealChef && !isBooked" (click)="bookMeal()"
+                <div class="col-12">
+                    <button *ngIf="!userIsMealChef && !isBooked && !isHistory" (click)="bookMeal()"
                         [disabled]="meal.partySize-meal.accountsBooked.length == 0"
                         class="btn btn-outline-primary float-end">Book</button>
-                    <button *ngIf="!userIsMealChef && isBooked" (click)="unbookMeal()"
+                    <button *ngIf="!userIsMealChef && isBooked && !isHistory" (click)="unbookMeal()"
                         class="btn btn-outline-secondary float-end">Unbook</button>
-                    <a *ngIf="userIsMealChef" routerLink="/meal/edit/{{meal.id}}"
+                    <a *ngIf="userIsMealChef && !isHistory" routerLink="/meal/edit/{{meal.id}}"
                         class="btn btn-outline-warning float-end">Edit</a>
+                    <a *ngIf="!userIsMealChef && isHistory" routerLink="/account/rate/{{chef.uid}}"
+                        class="btn btn-outline-warning float-end">Rate</a>
                 </div>
             </div>
         </div>

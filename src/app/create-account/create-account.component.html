@@ -1,37 +1,3 @@
-<div class="container-fluid">
-    <form (ngSubmit)="onSubmit()">
-        <div class="row justify-content-center">
-            <div class="col-6">
-                <div class="row justify-content-center">
-                    <mat-form-field appearance="outline" class="m-2" style="width: 40%">
-                        <mat-label>First Name</mat-label>
-                        <input required matInput placeholder="Placeholder" [(ngModel)]="account['first']" name="first">
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="m-2" style="width: 40%">
-                        <mat-label>Last Name</mat-label>
-                        <input required matInput placeholder="Placeholder" [(ngModel)]="account['last']" name="last">
-                    </mat-form-field>
-                </div>
-                <div class="row justify-content-center">
-                    <mat-form-field appearance="outline" class="m-2" style="width: 35%">
-                        <mat-label>Account Type</mat-label>
-                        <mat-select required [(ngModel)]="account['isChef']" name="type">
-                            <mat-option value="0">Diner</mat-option>
-                            <mat-option value="1">Cook</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="row justify-content-center">
-                    <mat-form-field appearance="outline" class="m-2" style="width: 90%">
-                        <mat-label>Bio / Description</mat-label>
-                        <textarea required matInput [(ngModel)]="account['bio']" name="bio"></textarea>
-                    </mat-form-field>
-                </div>
-                <button type="submit" mat-raised-button class="float-end">Create Account</button>
-            </div>
-        </div>
-    </form>
-</div>
 <mat-stepper orientation="vertical" [linear]="true" #stepper>
     <mat-step [stepControl]="firstFormGroup">
         <form [formGroup]="firstFormGroup">

@@ -18,10 +18,6 @@ export class MealListComponent implements OnInit {
     private mealService: MealService,
     private location: Location,
     private router: Router
-  ) {
-    console.log(this.meals);
-  }
-  ngOnInit(): void {
-    console.log(this.meals);
-  }
+  ) {}
+  ngOnInit(): void {}
 }
