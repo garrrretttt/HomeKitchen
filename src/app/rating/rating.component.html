@@ -1,1 +1,17 @@
-<p>rating works!</p>
+<div>
+    <div *ngIf="rating" class="border border-1 border-secondary rounded pt-1 pb-1 ps-2 mt-2" style="width: 400px;">
+        <span class="rating" *ngIf="rating.rating < 1">☆</span>
+        <span class="filled_rating" *ngIf="rating.rating >= 1">★</span>
+        <span class="rating" *ngIf="rating.rating < 2">☆</span>
+        <span class="filled_rating" *ngIf="rating.rating >= 2">★</span>
+        <span class="rating" *ngIf="rating.rating < 3">☆</span>
+        <span class="filled_rating" *ngIf="rating.rating >= 3">★</span>
+        <span class="rating" *ngIf="rating.rating < 4">☆</span>
+        <span class="filled_rating" *ngIf="rating.rating >= 4">★</span>
+        <span class="rating" *ngIf="rating.rating < 5">☆</span>
+        <span class="filled_rating" *ngIf="rating.rating >= 5">★</span>
+        <span> from <a routerLink="/account/view/{{raterAccount?.uid}}">{{raterAccount?.first}} {{raterAccount?.last}}</a></span>
+        <h5>Review:</h5>
+        <p class="m-0 p-0">{{rating.review}}</p>
+    </div>
+</div>

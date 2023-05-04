@@ -28,6 +28,9 @@
     <div>
         <mat-tab-group>
             <mat-tab label="Ratings">
+                <h4 class="m-3">Average rating from {{ratings.length}} people: {{averageRating | number: '1.1-1'}}</h4>
+                <mat-divider></mat-divider>
+                <rating *ngFor="let rating of ratings" [rating]="rating"></rating>
             </mat-tab>
             <mat-tab label="Created History">
                 <meal-list *ngIf="done" [meals]="createdHistory"></meal-list>

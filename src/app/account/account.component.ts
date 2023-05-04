@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { AccountService } from '../account.service';
 import { Account } from '../account';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { MealService } from '../meal.service';
 import { Meal } from '../meal';
+import { RatingService } from '../rating.service';
+import { Rating } from '../rating';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-account',
@@ -16,37 +19,51 @@ export class AccountComponent {
   user?: Account;
   createdHistory: Meal[] = [];
   bookedHistory: Meal[] = [];
+  ratings: Rating[] = [];
+  averageRating: number = 0;
   done: boolean = false;
+  id?: string;
 
   constructor(
     private accountService: AccountService,
     private mealService: MealService,
+    private ratingService: RatingService,
     private router: Router,
     private route: ActivatedRoute,
-  ) { }
+    private location: Location,
+  ) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        if(event.url.includes('/account/view/')){
+          
+        }
+      }
+    });
+  }
 
   async ngOnInit() {
     this.user = await this.accountService.getAccount();
-    const id = String(this.route.snapshot.paramMap.get('id'));
-    if (id != 'null') {
-      this.account = await this.accountService.getAccount(id);
+    this.id = String(this.route.snapshot.paramMap.get('id'));
+    if (this.id != 'null') {
+      this.account = await this.accountService.getAccount(this.id);
     }
     else {
       this.account = await this.accountService.getAccount();
     }
     this.getHistoryMeals();
+    this.getRatings();
   }
 
   onEdit() {
     this.router.navigate(['/account/edit'])
   }
 
-  averageRatings(ratings: number[]): number {
+  averageRatings(ratings: Rating[]) {
     let total: number = 0;
     for (let rating of ratings) {
-      total += rating;
+      total = total + parseInt(rating.rating.toString());
     }
-    return total / ratings.length;
+    this.averageRating = total / ratings.length;
   }
 
   getHistoryMeals() {
@@ -65,4 +82,12 @@ export class AccountComponent {
       this.done = true;
     });
   }
+
+  getRatings(){
+    this.ratingService.getRatings().then(ratings => {
+      this.ratings = ratings;
+      this.averageRatings(ratings);
+    })
+  }
+
 }
