@@ -32,6 +32,9 @@ import { CreateAccountComponent } from './create-account/create-account.componen
 import { AccountComponent } from './account/account.component';
 import { EditAccountComponent } from './edit-account/edit-account.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { GridViewComponent } from './grid-view/grid-view.component';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -55,6 +58,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     AccountComponent,
     EditAccountComponent,
     CalendarComponent,
+    GridViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,6 +83,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     MatListModule,
     BrowserAnimationsModule,
     MatTabsModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
   ],
   providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebase }],
   bootstrap: [AppComponent]
