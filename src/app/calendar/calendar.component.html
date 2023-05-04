@@ -9,9 +9,11 @@
     <meal-list *ngIf="done" [meals]="booked"></meal-list>
   </mat-tab>
   <mat-tab label="Created History">
+    <button mat-raised-button color="primary" (click)="filterCreatedHistory()">Filter</button>
     <meal-list *ngIf="done" [meals]="createdHistory"></meal-list>
   </mat-tab>
   <mat-tab label="Booked History">
+    <button mat-raised-button color="primary" (click)="filterBookedHistory()">Filter</button>
     <meal-list *ngIf="done" [meals]="bookedHistory"></meal-list>
   </mat-tab>
 </mat-tab-group>

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Meal } from '../meal';
 import { MealService } from '../meal.service';
 import { AccountService } from '../account.service';
+import { Query, getDocs } from 'firebase/firestore';
 
 @Component({
   selector: 'calendar',
@@ -41,5 +42,26 @@ export class CalendarComponent implements OnInit {
       }
       this.done = true;
     });
+  }
+
+  filterBookedHistory(): void {
+    
+  }
+
+  async filterCreatedHistory(): Promise<void> {
+   /* const dialogRef = this.dialog.open(ContactDialogComponent, {
+      width: '300px',
+      data: this.clone(contact),
+    });
+
+    dialogRef.afterClosed().subscribe((result: Query<Meal[]>) => {
+      this.createdHistory = await(getDocs(result));
+    }); 
+
+    const querySnapshot = await getDocs(q);*/
+  }
+
+  filter(): void {
+
   }
 }

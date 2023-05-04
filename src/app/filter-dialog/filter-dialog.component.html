@@ -1,0 +1,41 @@
+<mat-card class="padded-container" appearance="outlined">
+    <mat-card-title>Filter meals</mat-card-title>
+    <mat-card-content>
+        Filter by any of the following.
+    
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        placeholder="Name of meal"
+      />
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline">
+      <mat-label>Last name</mat-label>
+      <input
+        matInput
+      />
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline">
+      <mat-label>Phone number</mat-label>
+      <input
+        matInput
+      />
+    </mat-form-field>
+</mat-card-content>
+  
+    <mat-card-actions align="end">
+      <button
+        style="margin-right: 5px"
+        mat-flat-button
+        (click)="cancel()"
+        color="warn"
+      >
+        Cancel
+      </button>
+      <button mat-flat-button (click)="confirm()" color="primary">Filter meals</button>
+    </mat-card-actions>
+  </mat-card>
+  

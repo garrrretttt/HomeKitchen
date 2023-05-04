@@ -22,7 +22,8 @@ export class ExploreComponent {
     this.mealService.getMeals().then((meals) => {
       for (let meal of meals) {
         if (meal.chefId != this.accountService.getUid()) {
-          if (new Date(meal.startDate) >= new Date()) {
+          if (new Date(meal.startDate) >= new Date()
+              && meal.accountsBooked.length < meal.partySize) {
             this.meals.push(meal);
           }
         }

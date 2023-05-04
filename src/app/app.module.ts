@@ -35,6 +35,9 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { ExploreComponent } from './explore/explore.component';
 import { CreateRatingComponent } from './create-rating/create-rating.component';
 import { RatingComponent } from './rating/rating.component';
+import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -61,6 +64,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     ExploreComponent,
     CreateRatingComponent,
     RatingComponent,
+    FilterDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +89,8 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     MatListModule,
     BrowserAnimationsModule,
     MatTabsModule,
+    MatCardModule,
+    MatDialogModule,
   ],
   providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebase }],
   bootstrap: [AppComponent]
