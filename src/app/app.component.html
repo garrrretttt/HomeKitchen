@@ -5,25 +5,30 @@
     </button>
 
     <mat-nav-list>
-      <mat-list-item routerLink="/account/view">
-        <mat-icon mat-list-icon style="display: inline-flex; vertical-align: top;">person</mat-icon>
-        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex;">&nbsp;Account</h4>
+      <mat-list-item routerLink="/account/view"
+        class="border border-1 border-secondary border-start-0 border-end-0 border-bottom-0">
+        <mat-icon mat-list-icon style="display: inline-flex;">person</mat-icon>
+        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex; margin: auto;">&nbsp;Account</h4>
       </mat-list-item>
-      <mat-list-item routerLink="/calendar">
-        <mat-icon mat-list-icon style="display: inline-flex; vertical-align: top;">calendar_today</mat-icon>
-        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex;">&nbsp;Calendar</h4>
+      <mat-list-item routerLink="/calendar"
+        class="border border-1 border-secondary border-start-0 border-end-0 border-bottom-0">
+        <mat-icon mat-list-icon style="display: inline-flex;">calendar_today</mat-icon>
+        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex; margin: auto;">&nbsp;Calendar</h4>
       </mat-list-item>
-      <mat-list-item routerLink="/explore">
-        <mat-icon mat-list-icon style="display: inline-flex; vertical-align: top;">fastfood</mat-icon>
-        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex;">&nbsp;Explore</h4>
+      <mat-list-item routerLink="/explore"
+        class="border border-1 border-secondary border-start-0 border-end-0 border-bottom-0">
+        <mat-icon mat-list-icon style="display: inline-flex;">fastfood</mat-icon>
+        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex; margin: auto;">&nbsp;Explore</h4>
       </mat-list-item>
-      <mat-list-item routerLink="/meal/create" *ngIf="accountService.userIsChef()">
-        <mat-icon mat-list-icon style="display: inline-flex; vertical-align: top;">create</mat-icon>
-        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex;">&nbsp;Create Meal</h4>
+      <mat-list-item routerLink="/meal/create" *ngIf="accountService.userIsChef()"
+        class="border border-1 border-secondary border-start-0 border-end-0 border-bottom-0">
+        <mat-icon mat-list-icon style="display: inline-flex;">create</mat-icon>
+        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex; margin: auto;">&nbsp;Create Meal</h4>
       </mat-list-item>
-      <mat-list-item (click)="fireAuth.signOut();" *ngIf="fireAuth.user">
-        <mat-icon mat-list-icon style="display: inline-flex; vertical-align: top;">exit_to_app</mat-icon>
-        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex;">&nbsp;Log Out</h4>
+      <mat-list-item (click)="fireAuth.signOut();" *ngIf="fireAuth.user"
+        class="border border-1 border-secondary border-start-0 border-end-0 border-bottom-0">
+        <mat-icon mat-list-icon style="display: inline-flex;">exit_to_app</mat-icon>
+        <h4 mat-line *ngIf="isExpanded" style="display: inline-flex; margin: auto;">&nbsp;Log Out</h4>
       </mat-list-item>
     </mat-nav-list>
   </mat-drawer>
@@ -34,7 +39,7 @@
     </div>
     <ng-template #showLogin>
       <firebase-ui (signInSuccessWithAuthResult)="successLoginCallback($event)"
-        (signInFailure)="errorLoginCallback($event)" ></firebase-ui>
+        (signInFailure)="errorLoginCallback($event)"></firebase-ui>
     </ng-template>
   </div>
 </mat-drawer-container>

@@ -24,7 +24,7 @@ const routes: Routes = [
   { path: 'account/create', component: CreateAccountComponent },
   { path: 'calendar', component: CalendarComponent },
   { path: 'explore', component: ExploreComponent },
-  { path: 'account/rate/:id', component: CreateRatingComponent },
+  { path: 'account/rate/:id/:meal', component: CreateRatingComponent },
 ];
 
 @NgModule({

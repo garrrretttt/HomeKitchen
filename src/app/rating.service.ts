@@ -14,15 +14,25 @@ export class RatingService {
 
   async getRatings(uid: string): Promise<Rating[]> {
     let ratings: Rating[] = [];
-      let q = query(collection(this.fireStore, 'ratings'), where('ratedUid', '==', uid), orderBy('date', 'desc'));
-      let querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        ratings.push(doc.data() as Rating);
-      });
+    let q = query(collection(this.fireStore, 'ratings'), where('ratedUid', '==', uid), orderBy('date', 'desc'));
+    let querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      ratings.push(doc.data() as Rating);
+    });
     return ratings;
   }
 
-  async createRating(rating: Rating){
+  async getRatingByRater(mealId: string) {
+    let ratings: Rating[] = [];
+    let q = query(collection(this.fireStore, 'ratings'), where('mealId', '==', mealId));
+    let querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      ratings.push(doc.data() as Rating);
+    });
+    return ratings;
+  }
+
+  async createRating(rating: Rating) {
     let docRef = await addDoc(collection(this.fireStore, 'ratings'), rating);
     rating.id = docRef.id;
     await setDoc(docRef, rating);
