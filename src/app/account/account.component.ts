@@ -35,23 +35,26 @@ export class AccountComponent {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         if(event.url.includes('/account/view/')){
-          
+          this.ngOnInit(event.url.substring(14));
         }
       }
     });
   }
 
-  async ngOnInit() {
+  async ngOnInit(id?: string) {
     this.user = await this.accountService.getAccount();
-    this.id = String(this.route.snapshot.paramMap.get('id'));
+    this.id = id ? id : String(this.route.snapshot.paramMap.get('id'));
     if (this.id != 'null') {
       this.account = await this.accountService.getAccount(this.id);
     }
     else {
       this.account = await this.accountService.getAccount();
     }
+    this.ratings = [];
+    this.bookedHistory = [];
+    this.createdHistory = [];
     this.getHistoryMeals();
-    this.getRatings();
+    this.getRatings(this.id);
   }
 
   onEdit() {
@@ -83,8 +86,8 @@ export class AccountComponent {
     });
   }
 
-  getRatings(){
-    this.ratingService.getRatings().then(ratings => {
+  getRatings(uid: string){
+    this.ratingService.getRatings(uid).then(ratings => {
       this.ratings = ratings;
       this.averageRatings(ratings);
     })
