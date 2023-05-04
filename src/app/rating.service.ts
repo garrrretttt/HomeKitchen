@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Rating } from './rating';
 import { Firestore, addDoc } from '@angular/fire/firestore';
-import { collection, getDocs, orderBy, query, setDoc } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, setDoc, where } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +12,9 @@ export class RatingService {
 
   constructor() { }
 
-  async getRatings(): Promise<Rating[]> {
+  async getRatings(uid: string): Promise<Rating[]> {
     let ratings: Rating[] = [];
-      let q = query(collection(this.fireStore, 'ratings'), orderBy('date', 'desc'));
+      let q = query(collection(this.fireStore, 'ratings'), where('ratedUid', '==', uid), orderBy('date', 'desc'));
       let querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         ratings.push(doc.data() as Rating);
