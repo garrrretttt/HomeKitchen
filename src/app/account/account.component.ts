@@ -45,16 +45,21 @@ export class AccountComponent {
     this.user = await this.accountService.getAccount();
     this.id = id ? id : String(this.route.snapshot.paramMap.get('id'));
     if (this.id != 'null') {
-      this.account = await this.accountService.getAccount(this.id);
+      this.accountService.getAccount(this.id).then(account => {
+        this.account = account
+        this.getRatings(account.uid);
+      });
     }
     else {
-      this.account = await this.accountService.getAccount();
+      this.accountService.getAccount().then(account => {
+        this.account = account
+        this.getRatings(account.uid);
+      });
     }
     this.ratings = [];
     this.bookedHistory = [];
     this.createdHistory = [];
     this.getHistoryMeals();
-    this.getRatings(this.id);
   }
 
   onEdit() {

@@ -6,6 +6,8 @@ import { Meal } from '../meal';
 import { MealService } from '../meal.service';
 import { AccountService } from '../account.service';
 import { Account } from '../account';
+import { RatingService } from '../rating.service';
+import { Rating } from '../rating';
 
 @Component({
   selector: 'meal-detail',
@@ -21,11 +23,17 @@ export class MealDetailComponent implements OnInit {
   isBooked: boolean = false;
   userIsMealChef = false;
   isHistory = false;
+  bookedAccounts: Account[] = [];
+  rating?: Rating;
+  ratingIndices: number[] = [];
+  guestRatings: Rating[] = [];
+  chefRating?: Rating;
 
   constructor(
     private route: ActivatedRoute,
     private mealService: MealService,
     public accountService: AccountService,
+    private ratingService: RatingService,
     private location: Location,
     private router: Router
   ) { }
@@ -34,6 +42,9 @@ export class MealDetailComponent implements OnInit {
     if (this.id) {
       this.getMeal(this.id).then(async (meal: Meal) => {
         this.meal = meal;
+        this.getBookedAccounts().then(() => {
+          this.getRatings();
+        });
         if (this.accountService.isMealChef(meal.id)) {
           this.userIsMealChef = true;
         }
@@ -43,7 +54,7 @@ export class MealDetailComponent implements OnInit {
         this.accountService.getAccountByUid(this.meal.chefId).then((chef: Account) => {
           this.chef = chef;
         })
-        if(new Date(meal.startDate) < new Date()){
+        if (new Date(meal.startDate) < new Date()) {
           this.isHistory = true
         }
       });
@@ -78,6 +89,33 @@ export class MealDetailComponent implements OnInit {
     if (this.meal) {
       this.mealService.updateMeal(this.meal.id, this.meal);
       this.router.navigate(['/meal/view', this.meal.id]);
+    }
+  }
+
+  async getBookedAccounts() {
+    if (this.meal) {
+      for (let uid of this.meal.accountsBooked) {
+        this.bookedAccounts.push(await this.accountService.getAccountByUid(uid));
+      }
+    }
+  }
+
+  getRatings() {
+    if (this.meal) {
+      let meal = this.meal;
+      this.ratingService.getRatingByRater(meal.id).then(ratings => {
+        for (let i = 0; i < ratings.length; i++) {
+          if (ratings[i].ratedUid == meal.chefId) {
+            this.chefRating = ratings[i];
+          }
+          else for (let j = 0; j < this.bookedAccounts.length; j++) {
+            if (ratings[i].ratedUid == this.bookedAccounts[j].uid) {
+              this.guestRatings.push(ratings[i]);
+              this.ratingIndices.push(j);
+            }
+          }
+        }
+      });
     }
   }
 

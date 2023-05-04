@@ -4,6 +4,8 @@ import { Account } from '../account';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RatingService } from '../rating.service';
 import { Rating } from '../rating';
+import { MealService } from '../meal.service';
+import { Meal } from '../meal';
 
 @Component({
   selector: 'app-create-rating',
@@ -13,11 +15,13 @@ import { Rating } from '../rating';
 export class CreateRatingComponent {
 
   rateAccount?: Account;
-  review: string = ''
+  meal?: Meal;
+  review: string = '';
   rating: number = 0;
 
   constructor(
     private accountService: AccountService,
+    private mealService: MealService,
     private ratingService: RatingService,
     private route: ActivatedRoute,
     private router: Router,
@@ -28,22 +32,25 @@ export class CreateRatingComponent {
   }
 
   async getRateAccount() {
-    const id = String(this.route.snapshot.paramMap.get('id'));
-    this.rateAccount = await this.accountService.getAccountByUid(id);
+    const uid = String(this.route.snapshot.paramMap.get('id'));
+    this.rateAccount = await this.accountService.getAccountByUid(uid);
+    const mealId = String(this.route.snapshot.paramMap.get('meal'));
+    this.meal = await this.mealService.getMeal(mealId);
   }
 
   onSubmit() {
-    if (this.rating != 0) {
+    if (this.rating != 0 && this.meal && this.rateAccount) {
       let rating: Rating = {
         id: '',
         raterUid: this.accountService.getUid(),
         ratedUid: String(this.route.snapshot.paramMap.get('id')),
         rating: this.rating,
         review: this.review,
-        date: new Date()
+        date: new Date(),
+        mealId: this.meal.id
       };
       this.ratingService.createRating(rating);
-      this.router.navigate(['/account/view/', this.rateAccount?.uid]);
+      this.router.navigate(['/account/view/', this.rateAccount.uid]);
     }
   }
 

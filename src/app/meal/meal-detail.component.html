@@ -46,8 +46,44 @@
                         class="btn btn-outline-secondary float-end">Unbook</button>
                     <a *ngIf="userIsMealChef && !isHistory" routerLink="/meal/edit/{{meal.id}}"
                         class="btn btn-outline-warning float-end">Edit</a>
-                    <a *ngIf="!userIsMealChef && isHistory" routerLink="/account/rate/{{chef.uid}}"
+                    <a *ngIf="!userIsMealChef && isHistory && !chefRating"
+                        routerLink="/account/rate/{{chef.uid}}/{{meal.id}}"
                         class="btn btn-outline-warning float-end">Rate</a>
+                    <div *ngIf="!userIsMealChef && chefRating">
+                        <span>You rated: </span>
+                        <span class="chef_rating" *ngIf="chefRating.rating < 1">☆</span>
+                        <span class="chef_filled_rating" *ngIf="chefRating.rating >= 1">★</span>
+                        <span class="chef_rating" *ngIf="chefRating.rating < 2">☆</span>
+                        <span class="chef_filled_rating" *ngIf="chefRating.rating >= 2">★</span>
+                        <span class="chef_rating" *ngIf="chefRating.rating < 3">☆</span>
+                        <span class="chef_filled_rating" *ngIf="chefRating.rating >= 3">★</span>
+                        <span class="chef_rating" *ngIf="chefRating.rating < 4">☆</span>
+                        <span class="chef_filled_rating" *ngIf="chefRating.rating >= 4">★</span>
+                        <span class="chef_rating" *ngIf="chefRating.rating < 5">☆</span>
+                        <span class="chef_filled_rating" *ngIf="chefRating.rating >= 5">★</span>
+                    </div>
+                    <div *ngIf="userIsMealChef && isHistory && bookedAccounts.length != 0">
+                        <h5>Guests:</h5>
+                        <div *ngFor="let account of bookedAccounts; let i = index">
+                            <a routerLink="/account/view/{{account.uid}}"
+                                style="display: inline-flex;">{{account.first}} {{account.last}}</a>
+                            <a *ngIf="!ratingIndices.includes(i)"
+                                routerLink="/account/rate/{{account.uid}}/{{meal.id}}"
+                                class="btn btn-outline-warning p-1 ms-2" style="display: inline-flex;">Rate</a>
+                            <div *ngIf="ratingIndices.includes(i)" style="display: inline-flex;" class="ms-2">
+                                <span class="rating" *ngIf="guestRatings[ratingIndices[i]].rating < 1">☆</span>
+                                <span class="filled_rating" *ngIf="guestRatings[ratingIndices[i]].rating >= 1">★</span>
+                                <span class="rating" *ngIf="guestRatings[ratingIndices[i]].rating < 2">☆</span>
+                                <span class="filled_rating" *ngIf="guestRatings[ratingIndices[i]].rating >= 2">★</span>
+                                <span class="rating" *ngIf="guestRatings[ratingIndices[i]].rating < 3">☆</span>
+                                <span class="filled_rating" *ngIf="guestRatings[ratingIndices[i]].rating >= 3">★</span>
+                                <span class="rating" *ngIf="guestRatings[ratingIndices[i]].rating < 4">☆</span>
+                                <span class="filled_rating" *ngIf="guestRatings[ratingIndices[i]].rating >= 4">★</span>
+                                <span class="rating" *ngIf="guestRatings[ratingIndices[i]].rating < 5">☆</span>
+                                <span class="filled_rating" *ngIf="guestRatings[ratingIndices[i]].rating >= 5">★</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
