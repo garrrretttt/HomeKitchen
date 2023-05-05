@@ -35,42 +35,22 @@ export class MealService {
       accountsBooked: []
     };
     querySnapshot.forEach((doc) => {
-      meal = doc.data() as Meal;
+      let data = doc.data()
+      data['startDate'] = data['startDate'].toDate();
+      meal = data as Meal;
     });
     return meal;
   }
 
   async getMeals(): Promise<Meal[]> {
     let meals: Meal[] = [];
-      let q = query(this.mealRef, orderBy('startDate'));
-      let querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        meals.push(doc.data() as Meal);
-      });
-    return meals;
-  }
-
-  async getMealsById(mealIds: string[]): Promise<Meal[]> {
-    let meals: Meal[] = [];
-    for(let mealId of mealIds){
-      let q = query(this.mealRef, where('id', '==', mealId));
-      let querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        meals.push(doc.data() as Meal);
-      });
-    }
-    return meals;
-  }
-
-  async getPastMeals(mealIds: string[]){
-    let meals: Meal[] = [];
-    for(let mealId of mealIds){
-      let q = query(this.mealRef, where('id', '==', mealId), where('startData', '<', new Date()));
-      let querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        meals.push(doc.data() as Meal);
-      });
-    }
+    let q = query(this.mealRef, orderBy('startDate'));
+    let querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      let data = doc.data()
+      data['startDate'] = data['startDate'].toDate();
+      meals.push(data as Meal);
+    });
     return meals;
   }
 
@@ -100,15 +80,15 @@ export class MealService {
     return false;
   }
 
-  bookMeal(meal: Meal, uid: string){
+  bookMeal(meal: Meal, uid: string) {
     meal.accountsBooked.push(uid);
     this.updateMeal(meal.id, meal);
   }
 
   unbookMeal(meal: Meal, uid: string) {
-      let mealIndex = meal.accountsBooked.findIndex(x => x == uid);
-      meal.accountsBooked.splice(mealIndex, 1);
-      this.updateMeal(meal.id, meal);
+    let mealIndex = meal.accountsBooked.findIndex(x => x == uid);
+    meal.accountsBooked.splice(mealIndex, 1);
+    this.updateMeal(meal.id, meal);
   }
 
 }
