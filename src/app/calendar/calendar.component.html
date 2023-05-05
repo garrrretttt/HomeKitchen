@@ -5,10 +5,4 @@
   <mat-tab label="Booked">
     <meal-list *ngIf="done" [meals]="booked"></meal-list>
   </mat-tab>
-  <mat-tab label="Created History">
-    <meal-list *ngIf="done" [meals]="createdHistory"></meal-list>
-  </mat-tab>
-  <mat-tab label="Booked History">
-    <meal-list *ngIf="done" [meals]="bookedHistory"></meal-list>
-  </mat-tab>
 </mat-tab-group>

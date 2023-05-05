@@ -39,7 +39,7 @@ export class MealDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.id) {
+      this.id = this.id ? this.id : String(this.route.snapshot.paramMap.get('id'));
       this.getMeal(this.id).then(async (meal: Meal) => {
         this.meal = meal;
         this.getBookedAccounts().then(() => {
@@ -58,7 +58,6 @@ export class MealDetailComponent implements OnInit {
           this.isHistory = true
         }
       });
-    }
   }
 
   async getMeal(id: string): Promise<Meal> {
