@@ -26,7 +26,7 @@ export class CreateMealComponent {
   mealLocation: string = '';
   startDate: Date = new Date();
   duration: number = 0;
-  picture: string = 'https://i.imgur.com/e76p3L3.png';
+  picture: string = '';
   chef?: Account; // get chef id
   ratings: number[] = [];
   accountsBooked: number[] = [];
