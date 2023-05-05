@@ -14,7 +14,6 @@ import { AccountService } from '../account.service';
 export class CreateMealComponent {
 
   user?: Account; // get active user
-  meal?: Meal;
   restriction: string = '';
   tag: string = '';
 
@@ -54,13 +53,11 @@ export class CreateMealComponent {
   }
 
   isValidMeal(): boolean {
-    if (this.meal) {
-      if (this.meal?.dishName != '' && this.meal.cost != 0 && this.meal.partySize != 0
-        && new Date(this.meal.startDate) >= new Date()
-        && this.meal.duration != 0 && this.meal.location != '') {
+      if (this.dishName != '' && this.cost != 0 && this.partySize != 0
+        && new Date(this.startDate) >= new Date()
+        && this.duration != 0 && this.mealLocation != '') {
         return true;
       }
-    }
     return false;
   }
 
@@ -85,43 +82,33 @@ export class CreateMealComponent {
   }
 
   changeStartTime(time: string) {
-    if (this.meal) {
       let split = time.split(':');
-      let date = new Date(this.meal.startDate);
+      let date = new Date(this.startDate);
       date.setHours(parseInt(split[0]));
       date.setMinutes(parseInt(split[1]));
-      this.meal.startDate = date;
-    }
+      this.startDate = date;
   }
 
   addRestriction() {
-    if (this.meal) {
-      if (!this.meal.dietaryRestrictions.includes(this.restriction) && this.restriction != '') {
-        this.meal?.dietaryRestrictions.push(this.restriction);
+      if (!this.dietaryRestrictions.includes(this.restriction) && this.restriction != '') {
+        this.dietaryRestrictions.push(this.restriction);
         this.restriction = '';
       }
-    }
   }
 
   deleteRestriction(id: number) {
-    if (this.meal) {
-      this.meal.dietaryRestrictions.splice(id, 1);
-    }
+      this.dietaryRestrictions.splice(id, 1);
   }
 
   addTag() {
-    if (this.meal) {
-      if (!this.meal.tags.includes(this.tag) && this.tag != '') {
-        this.meal.tags.push(this.tag);
+      if (!this.tags.includes(this.tag) && this.tag != '') {
+        this.tags.push(this.tag);
         this.tag = '';
       }
-    }
   }
 
   deleteTag(id: number) {
-    if (this.meal) {
-      this.meal.tags.splice(id, 1);
-    }
+      this.tags.splice(id, 1);
   }
 
 }
