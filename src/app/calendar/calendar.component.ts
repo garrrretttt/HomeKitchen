@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { Meal } from '../meal';
 import { MealService } from '../meal.service';
 import { AccountService } from '../account.service';
-import { Query, getDocs, orderBy, query } from 'firebase/firestore';
+import { DocumentData, Firestore, Query, collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterDialogComponent, FilterDialogInput } from '../filter-dialog/filter-dialog.component';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'calendar',
@@ -50,28 +51,25 @@ export class CalendarComponent implements OnInit {
     
   }
 
-  async filterCreatedHistory(): Promise<void> {
+  filterCreatedHistory(): void {
     this.createdHistory = [];
     let input: FilterDialogInput = {
-      query: ,
+      query: query(collection(inject(Firestore), "meals")),
       isExplore: false,
     };
     const dialogRef = this.dialog.open(FilterDialogComponent, {
       width: '500px',
-      data: {  },
+      data: input,
     });
 
-    dialogRef.afterClosed().subscribe((result: Query<Meal[]>) => {
+    dialogRef.afterClosed().subscribe(async (result: Query<DocumentData>) => {
       let meals: Meal[] = [];
-      let q = query(this.mealRef, orderBy('startDate'));
-      let querySnapshot = await getDocs(q);
+      let querySnapshot = await getDocs(result);
       querySnapshot.forEach((doc) => {
         meals.push(doc.data() as Meal);
       });
       this.createdHistory = meals;
-    }); 
-
-    const querySnapshot = await getDocs(result);
+    });
   }
 
   filter(): void {

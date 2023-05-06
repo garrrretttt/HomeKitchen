@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Meal } from '../meal';
-import { Query } from 'firebase/firestore';
+import { DocumentData, Query } from 'firebase/firestore';
 
 @Component({
   selector: 'app-filter-dialog',
@@ -23,7 +23,7 @@ export class FilterDialogComponent {
   minRating?: number;
   removeFull: boolean = false; //stored by id
 
-  query: Query<Meal[]>;
+  query: Query<DocumentData>;
 
   constructor(
     public dialogRef: MatDialogRef<FilterDialogComponent>,
@@ -36,15 +36,15 @@ export class FilterDialogComponent {
 
 
   cancel(): void {
-    this.dialogRef.close({ confirm: false });
+    this.dialogRef.close(this.query);
   }
 
   confirm(): void {
-    this.dialogRef.close({ confirm: true });
+    this.dialogRef.close(this.query);
   }
 }
 
 export interface FilterDialogInput {
-  query: Query<Meal[]>;
+  query: Query<DocumentData>;
   isExplore: boolean;
 }
