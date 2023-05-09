@@ -45,7 +45,7 @@
                 <mat-divider></mat-divider>
                 <rating *ngFor="let rating of ratings" [rating]="rating"></rating>
             </mat-tab>
-            <mat-tab label="Created History">
+            <mat-tab *ngIf="account.isChef" label="Created History">
                 <meal-list *ngIf="done" [meals]="createdHistory"></meal-list>
             </mat-tab>
             <mat-tab *ngIf="user?.uid == account.uid" label="Booked History">

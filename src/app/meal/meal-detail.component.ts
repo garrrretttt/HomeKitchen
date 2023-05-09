@@ -24,7 +24,7 @@ export class MealDetailComponent implements OnInit {
   userIsMealChef = false;
   isHistory = false;
   bookedAccounts: Account[] = [];
-  rating?: Rating;
+  // rating?: Rating;
   ratingIndices: number[] = [];
   guestRatings: Rating[] = [];
   chefRating?: Rating;
@@ -39,25 +39,25 @@ export class MealDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-      this.id = this.id ? this.id : String(this.route.snapshot.paramMap.get('id'));
-      this.getMeal(this.id).then(async (meal: Meal) => {
-        this.meal = meal;
-        this.getBookedAccounts().then(() => {
-          this.getRatings();
-        });
-        if (this.accountService.isMealChef(meal.id)) {
-          this.userIsMealChef = true;
-        }
-        else {
-          this.isBooked = await this.accountService.hasBookedMeal(meal.id);
-        }
-        this.accountService.getAccountByUid(this.meal.chefId).then((chef: Account) => {
-          this.chef = chef;
-        })
-        if (new Date(meal.startDate) < new Date()) {
-          this.isHistory = true
-        }
+    this.id = this.id ? this.id : String(this.route.snapshot.paramMap.get('id'));
+    this.getMeal(this.id).then(async (meal: Meal) => {
+      this.meal = meal;
+      this.getBookedAccounts().then(() => {
+        this.getRatings();
       });
+      if (this.accountService.isMealChef(meal.id)) {
+        this.userIsMealChef = true;
+      }
+      else {
+        this.isBooked = await this.accountService.hasBookedMeal(meal.id);
+      }
+      this.accountService.getAccountByUid(this.meal.chefId).then((chef: Account) => {
+        this.chef = chef;
+      })
+      if (new Date(meal.startDate) < new Date()) {
+        this.isHistory = true
+      }
+    });
   }
 
   async getMeal(id: string): Promise<Meal> {
@@ -102,6 +102,9 @@ export class MealDetailComponent implements OnInit {
   getRatings() {
     if (this.meal) {
       let meal = this.meal;
+      for (let account of this.bookedAccounts) {
+        this.ratingIndices.push(-1);
+      }
       this.ratingService.getRatingByRater(meal.id).then(ratings => {
         for (let i = 0; i < ratings.length; i++) {
           if (ratings[i].ratedUid == meal.chefId) {
@@ -110,7 +113,8 @@ export class MealDetailComponent implements OnInit {
           else for (let j = 0; j < this.bookedAccounts.length; j++) {
             if (ratings[i].ratedUid == this.bookedAccounts[j].uid) {
               this.guestRatings.push(ratings[i]);
-              this.ratingIndices.push(j);
+              let ratingIndex = this.guestRatings.indexOf(ratings[i]);
+              this.ratingIndices[j] = ratingIndex;
             }
           }
         }
