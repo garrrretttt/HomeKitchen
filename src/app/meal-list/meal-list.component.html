@@ -1,6 +1,6 @@
 <div *ngIf="meals" class="container-fluid">
-  <div *ngIf="meals.length != 0" class="row">
-    <div class="col">
+  <div *ngIf="meals.length != 0" class="row m-0 p-0">
+    <div class="col m-0 p-0">
       <meal-detail
         *ngFor="let meal of meals"
         [id]="meal.id"
