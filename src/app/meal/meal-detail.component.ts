@@ -24,10 +24,10 @@ export class MealDetailComponent implements OnInit {
   userIsMealChef = false;
   isHistory = false;
   bookedAccounts: Account[] = [];
-  // rating?: Rating;
   ratingIndices: number[] = [];
   guestRatings: Rating[] = [];
   chefRating?: Rating;
+  user?: Account;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,6 +40,7 @@ export class MealDetailComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.id ? this.id : String(this.route.snapshot.paramMap.get('id'));
+    this.accountService.getAccount().then(account => this.user = account);
     this.getMeal(this.id).then(async (meal: Meal) => {
       this.meal = meal;
       this.getBookedAccounts().then(() => {

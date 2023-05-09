@@ -46,7 +46,7 @@
                         class="btn btn-outline-secondary float-end">Unbook</button>
                     <a *ngIf="userIsMealChef && !isHistory" routerLink="/meal/edit/{{meal.id}}"
                         class="btn btn-outline-warning float-end">Edit</a>
-                    <a *ngIf="!userIsMealChef && isHistory && !chefRating"
+                    <a *ngIf="!userIsMealChef && isHistory && !chefRating && user && meal.accountsBooked.includes(user.uid)"
                         routerLink="/account/rate/{{chef.uid}}/{{meal.id}}"
                         class="btn btn-outline-warning float-end">Rate</a>
                     <div *ngIf="!userIsMealChef && chefRating">
