@@ -3,6 +3,7 @@ import { Meal } from '../meal';
 import { MealService } from '../meal.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { AccountService } from '../account.service';
 
 @Component({
   selector: 'meal-list',
@@ -17,11 +18,6 @@ export class MealListComponent implements OnInit {
     private mealService: MealService,
     private location: Location,
     private router: Router
-  ) {
-    console.log(this.meals);
-  }
-
-  ngOnInit(): void {
-    console.log(this.meals);
-  }
+  ) {}
+  ngOnInit(): void {}
 }

@@ -1,0 +1,27 @@
+.rating{
+    width: 1em;
+    font-size: 1rem;
+    color: #FFD600;
+}
+
+.filled_rating{
+    content: "\2605";
+    width: 1em;
+    font-size: 1rem;
+    color: #FFD600;
+    opacity: 1
+}
+
+.chef_rating{
+    width: 1em;
+    font-size: 2rem;
+    color: #FFD600;
+}
+
+.chef_filled_rating{
+    content: "\2605";
+    width: 1em;
+    font-size: 2rem;
+    color: #FFD600;
+    opacity: 1
+}

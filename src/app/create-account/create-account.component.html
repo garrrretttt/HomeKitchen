@@ -1,34 +1,56 @@
-<div class="container-fluid">
-    <form (ngSubmit)="onSubmit()">
-        <div class="row justify-content-center">
-            <div class="col-6">
-                <div class="row justify-content-center">
-                    <mat-form-field appearance="outline" class="m-2" style="width: 40%">
-                        <mat-label>First Name</mat-label>
-                        <input required matInput placeholder="Placeholder" [(ngModel)]="account['first']" name="first">
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="m-2" style="width: 40%">
-                        <mat-label>Last Name</mat-label>
-                        <input required matInput placeholder="Placeholder" [(ngModel)]="account['last']" name="last">
-                    </mat-form-field>
-                </div>
-                <div class="row justify-content-center">
-                    <mat-form-field appearance="outline" class="m-2" style="width: 35%">
-                        <mat-label>Account Type</mat-label>
-                        <mat-select required [(ngModel)]="account['isChef']" name="type">
-                            <mat-option value="0">Diner</mat-option>
-                            <mat-option value="1">Cook</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="row justify-content-center">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Bio / Description</mat-label>
-                        <textarea required matInput [(ngModel)]="account['bio']" name="bio"></textarea>
-                    </mat-form-field>
-                </div>
-                <button type="submit" mat-raised-button class="float-end">Create Account</button>
+<mat-stepper orientation="vertical" [linear]="true" #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Fill out your name</ng-template>
+            <mat-form-field appearance="fill" class="me-2">
+                <mat-label>First Name</mat-label>
+                <input matInput placeholder="John" formControlName="firstCtrl" required [(ngModel)]="account.first">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Last Name</mat-label>
+                <input matInput placeholder="Smith" formControlName="firstCtrl" required [(ngModel)]="account.last">
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperNext>Next</button>
             </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>What type of account are you creating?</ng-template>
+            <mat-form-field appearance="outline" class="m-2" style="width: 35%">
+                <mat-label>Account Type</mat-label>
+                <mat-select formControlName="secondCtrl" required [(ngModel)]="account.isChef">
+                    <mat-option value="0">Diner</mat-option>
+                    <mat-option value="1">Cook</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="thirdFormGroup">
+        <form [formGroup]="thirdFormGroup">
+            <ng-template matStepLabel>Fill out your biography</ng-template>
+            <mat-form-field appearance="outline" class="m-2" style="width: 90%">
+                <mat-label>Biography</mat-label>
+                <textarea formControlName="thirdCtrl" required matInput [(ngModel)]="account.bio" name="bio"
+                    placeholder="Who are you? What kinds of food do you like and/or make?"></textarea>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>Click finish to create your account.</p>
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="onSubmit()">Finish</button>
         </div>
-    </form>
-</div>
+    </mat-step>
+</mat-stepper>

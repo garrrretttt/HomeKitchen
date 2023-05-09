@@ -46,11 +46,9 @@ export class AccountService {
       dietaryRestrictions: [],
       bio: '',
       profilePicture: '',
-      ratings: { 'Diner': [], 'Chef': [] },
-      username: '',
-      password: '',
-      mealsCreated: [],
-      mealsBooked: []
+      ratings: [],
+      mealsBooked: [],
+      mealsCreated: []
     }
     querySnapshot.forEach((doc) => {
       account = doc.data() as Account;
@@ -76,8 +74,16 @@ export class AccountService {
     return false;
   }
 
-  getAccount() {
-    return this.account;
+  async getAccount(id?: string): Promise<Account> {
+    if (id) {
+      return await this.getAccountByUid(id);
+    }
+    else if (this.account) {
+      return this.account
+    }
+    else {
+      return await this.getAccountByUid(this.getUid())
+    }
   }
 
   async createAccount(account: Account) {
@@ -86,6 +92,7 @@ export class AccountService {
   }
 
   async updateAccount(account: Account) {
+    this.account = account;
     let docRef = doc(this.accountRef, this.userId);
     await updateDoc(docRef, account as any);
   }
@@ -96,9 +103,31 @@ export class AccountService {
     this.fireAuth.currentUser.then(user => user?.delete())
   }
 
+  createMeal(mealId: string) {
+    if (this.account) {
+      this.account.mealsCreated.push(mealId);
+      this.updateAccount(this.account);
+    }
+  }
+
+  deleteMeal(mealId: String) {
+    if (this.account) {
+      let mealIndex = this.account.mealsCreated.findIndex(x => x == mealId);
+      this.account.mealsCreated.splice(mealIndex, 1);
+      this.updateAccount(this.account);
+    }
+  }
+
+  isMealChef(mealId: string): boolean {
+    if (this.account?.mealsCreated.includes(mealId)) {
+      return true;
+    }
+    return false;
+  }
+
   bookMeal(mealId: string) {
     if (this.account) {
-      this.account?.mealsBooked.push(mealId);
+      this.account.mealsBooked.push(mealId);
       this.updateAccount(this.account);
     }
   }
@@ -111,11 +140,22 @@ export class AccountService {
     }
   }
 
-  hasBookedMeal(mealId: string): boolean {
-    if (this.account?.mealsBooked.includes(mealId)) {
-      return true;
+  async hasBookedMeal(mealId: string): Promise<boolean> {
+    let hasBooked = (await this.getAccount()).mealsBooked.includes(mealId);
+    if (this.account) {
+      return this.account.mealsBooked.includes(mealId);
     }
-    return false;
+    return hasBooked;
+  }
+
+  async getBookedMeals(): Promise<string[]> {
+    let mealIds: string[] = (await this.getAccount()).mealsBooked;
+    return mealIds;
+  }
+
+  async getCreatedMeals(): Promise<string[]> {
+    let mealIds: string[] = (await this.getAccount()).mealsCreated;
+    return mealIds;
   }
 
 }

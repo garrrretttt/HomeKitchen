@@ -1,0 +1,56 @@
+<div *ngIf="account" class="container-fluid">
+    <div class="row m-0 p-0">
+        <div class="col m-0 p-0">
+            <div class="row p-0 m-0">
+                <div class="col-6 m-0 p-0">
+                    <h1 class="p-0 m-0 float-start">{{account.first}} {{account.last}}</h1>
+                </div>
+                <div class="col-6 m-0 p-0">
+                    <button mat-icon-button *ngIf="user?.uid == account.uid" (click)="onEdit()" class="float-end"
+                        style="width: 4rem; height: 4rem;">
+                        <mat-icon style="font-size:2.5rem; height: 2.5rem; width: 2.5rem;">edit</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <div class="row m-0 p-0">
+                <h6 *ngIf="account.isChef" class="border border-secondary border-1 rounded text-success p-1 text-center"
+                    style="width: 3rem;">Cook</h6>
+                <h6 *ngIf="!account.isChef"
+                    class="border border-secondary border-1 rounded text-warning p-1 text-center" style="width: 3rem;">
+                    Diner</h6>
+            </div>
+        </div>
+    </div>
+    <div class="row m-0 p-0 w-50">
+        <p>{{account.bio}}</p>
+    </div>
+    <mat-divider></mat-divider>
+    <div>
+        <mat-tab-group>
+            <mat-tab label="Ratings">
+                <h4 class="m-3" style="display: inline-flex;">Average rating from {{ratings.length}} people:</h4>
+                <div *ngIf="averageRating" style="display: inline-flex;">
+                    <span class="rating" *ngIf="averageRating < 1">☆</span>
+                    <span class="filled_rating" *ngIf="averageRating >= 1">★</span>
+                    <span class="rating" *ngIf="averageRating < 2">☆</span>
+                    <span class="filled_rating" *ngIf="averageRating >= 2">★</span>
+                    <span class="rating" *ngIf="averageRating < 3">☆</span>
+                    <span class="filled_rating" *ngIf="averageRating >= 3">★</span>
+                    <span class="rating" *ngIf="averageRating < 4">☆</span>
+                    <span class="filled_rating" *ngIf="averageRating >= 4">★</span>
+                    <span class="rating" *ngIf="averageRating < 5">☆</span>
+                    <span class="filled_rating" *ngIf="averageRating >= 5">★</span>
+                </div>
+                <span>{{averageRating | number: '1.1-1'}}</span>
+                <mat-divider></mat-divider>
+                <rating *ngFor="let rating of ratings" [rating]="rating"></rating>
+            </mat-tab>
+            <mat-tab *ngIf="account.isChef" label="Created History">
+                <meal-list *ngIf="done" [meals]="createdHistory"></meal-list>
+            </mat-tab>
+            <mat-tab *ngIf="user?.uid == account.uid" label="Booked History">
+                <meal-list *ngIf="done" [meals]="bookedHistory"></meal-list>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

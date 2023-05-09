@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Meal } from 'src/app/meal';
 import { Firestore } from '@angular/fire/firestore';
-import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Injectable({
@@ -35,34 +35,22 @@ export class MealService {
       accountsBooked: []
     };
     querySnapshot.forEach((doc) => {
-      meal = doc.data() as Meal;
+      let data = doc.data()
+      data['startDate'] = data['startDate'].toDate();
+      meal = data as Meal;
     });
     return meal;
   }
 
   async getMeals(): Promise<Meal[]> {
-    let querySnapshot = await getDocs(this.mealRef);
     let meals: Meal[] = [];
+    let q = query(this.mealRef, orderBy('startDate'));
+    let querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      meals.push(doc.data() as Meal);
+      let data = doc.data()
+      data['startDate'] = data['startDate'].toDate();
+      meals.push(data as Meal);
     });
-    if (meals.length == 0) {
-      meals.push({
-        id: '',
-        dishName: '',
-        partySize: 0,
-        tags: [],
-        dietaryRestrictions: [],
-        cost: 0,
-        location: '',
-        startDate: new Date(),
-        duration: 0,
-        picture: '',
-        chefId: '',
-        ratings: [],
-        accountsBooked: []
-      });
-    }
     return meals;
   }
 
@@ -91,4 +79,16 @@ export class MealService {
     }
     return false;
   }
+
+  bookMeal(meal: Meal, uid: string) {
+    meal.accountsBooked.push(uid);
+    this.updateMeal(meal.id, meal);
+  }
+
+  unbookMeal(meal: Meal, uid: string) {
+    let mealIndex = meal.accountsBooked.findIndex(x => x == uid);
+    meal.accountsBooked.splice(mealIndex, 1);
+    this.updateMeal(meal.id, meal);
+  }
+
 }

@@ -11,10 +11,12 @@ import { Firestore } from '@angular/fire/firestore';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'HomeKitchen';
+
+  isExpanded = true;
 
   fireStore: Firestore = inject(Firestore);
   fireAuth: AngularFireAuth = inject(AngularFireAuth);
+  title: string = 'HomeKitchen';
 
   constructor(
     public accountService: AccountService,
@@ -25,7 +27,7 @@ export class AppComponent {
 
   async successLoginCallback(result: FirebaseUISignInSuccessWithAuthResult) {
     if((await this.accountService.accountExists()).valueOf()){
-      this.router.navigate(['/home']);
+      this.router.navigate(['/account/view']);
     }
     else{
       this.router.navigate(['/account/create'])

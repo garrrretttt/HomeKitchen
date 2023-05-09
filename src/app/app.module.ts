@@ -1,16 +1,21 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FirebaseUIModule, firebase } from 'firebaseui-angular';
 import { getFirestore, provideFirestore } from "@angular/fire/firestore";
-import { provideAuth,getAuth } from '@angular/fire/auth';
+import { provideAuth, getAuth } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatStepperModule } from '@angular/material/stepper';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -24,7 +29,12 @@ import { provideFirebaseApp } from '@angular/fire/app';
 import { initializeApp } from 'firebase/app';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { CreateAccountComponent } from './create-account/create-account.component';
+import { AccountComponent } from './account/account.component';
+import { EditAccountComponent } from './edit-account/edit-account.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { ExploreComponent } from './explore/explore.component';
+import { CreateRatingComponent } from './create-rating/create-rating.component';
+import { RatingComponent } from './rating/rating.component';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -45,11 +55,17 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     CreateMealComponent,
     MealCardComponent,
     CreateAccountComponent,
+    AccountComponent,
+    EditAccountComponent,
     CalendarComponent,
+    ExploreComponent,
+    CreateRatingComponent,
+    RatingComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
@@ -61,6 +77,12 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    MatDividerModule,
+    MatIconModule,
+    MatStepperModule,
+    MatTabsModule,
+    MatSidenavModule,
+    MatListModule,
     BrowserAnimationsModule,
     MatTabsModule,
   ],
