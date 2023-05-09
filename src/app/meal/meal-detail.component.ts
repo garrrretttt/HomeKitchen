@@ -108,7 +108,7 @@ export class MealDetailComponent implements OnInit {
       }
       this.ratingService.getRatingByRater(meal.id).then(ratings => {
         for (let i = 0; i < ratings.length; i++) {
-          if (ratings[i].ratedUid == meal.chefId) {
+          if (ratings[i].ratedUid == meal.chefId && ratings[i].raterUid == this.user?.uid) {
             this.chefRating = ratings[i];
           }
           else for (let j = 0; j < this.bookedAccounts.length; j++) {
